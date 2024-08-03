@@ -1,0 +1,9 @@
+.footer {
+    display: flex;
+    justify-content: flex-end; /* Align content to the right */
+    padding: 2vh; /* Add padding for spacing */
+  }
+  
+  .footer p {
+    margin: 0;
+  }

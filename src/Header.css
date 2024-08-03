@@ -1,0 +1,35 @@
+.header-bar {
+  display: flex;
+  align-items: center; /* Align items vertically centered within the header */
+  justify-content: flex-start; /* Align items to the left */
+  padding: 2vh; /* Converted from 10px to 2vh */
+}
+
+.header-image {
+  width: 50px; 
+  height: auto;
+  margin-right: 10px; 
+}
+
+.left {
+    display: flex;
+    align-items: center; /* Ensure items in the left section are centered vertically */
+    margin-right: auto;
+    width: 70vw;
+  }
+  
+  .right {
+    display: flex;
+    align-items: center; /* Ensure items in the right section are centered vertically */
+    margin-left: auto;
+  }
+
+  .right a {
+    color: white; /* Set icon color to white */
+    font-size: 24px; /* Set icon size to 48px */
+    width: 24px; /* Ensure the anchor tag has the same width */
+    height: 24px; /* Ensure the anchor tag has the same height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
