@@ -1,0 +1,26 @@
+.about-section {
+  padding: 1vh 5vw;
+  margin: 0;
+  /* position: absolute;
+  top: 80vh; */
+  width: 90vw;
+  height: 10vh;
+  background: repeating-linear-gradient(
+      45deg,
+      #fafafa,
+      #fcfcfc 10px,
+      #ffffff 10px,
+      #ffffff 20px
+  );
+  text-align: center;
+  color: #000;
+}
+
+.about-section h3 {
+  line-height: 4px;
+}
+
+.about-section a {
+  color: #000;
+  text-decoration: underline;
+}

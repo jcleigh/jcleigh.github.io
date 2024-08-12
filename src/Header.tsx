@@ -7,15 +7,19 @@ const Header: React.FC = () => {
   return (
     <header className="header-bar">
       <div className="left">
-        <img src="/picard-circle.png" alt="picard" className="header-image" />
-        <h2>jcleigh</h2>
-      </div>
-      <div className="right">
-        <a href="https://github.com/jcleigh" target="_blank" rel="noopener noreferrer" data-testid="githubLink" title="GitHub">
-          <FontAwesomeIcon icon={faGithub} />
+        <a href="/" title="Home">
+          <img src="/picard-circle.png" alt="picard" className="header-image" />
+        </a>
+        <a href="/" title="Home">
+          <h2>jcleigh</h2>
         </a>
       </div>
-    </header>
+      <div className="right">
+        <a href="https://github.com/jcleigh" target="_blank" rel="noopener noreferrer" title="GitHub">
+          <FontAwesomeIcon icon={faGithub} className='icon' />
+        </a>
+      </div>
+    </header >
   );
 };
 

@@ -1,7 +1,8 @@
 .footer {
     display: flex;
-    justify-content: flex-end; /* Align content to the right */
-    padding: 2vh; /* Add padding for spacing */
+    justify-content: flex-end;
+    padding: 2vh;
+    background-color: #8f88ac;
   }
   
   .footer p {

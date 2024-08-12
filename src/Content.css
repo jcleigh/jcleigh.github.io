@@ -1,4 +1,9 @@
 .content-section {
-  padding: 2vh 5vw; /* Add padding to the content section */
+  padding: 2vh 5vw;
   width: 90vw;
+  min-height: 67vh;
+}
+
+.content-section img {
+  width: 200px;
 }
