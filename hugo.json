@@ -1,0 +1,22 @@
+{
+    "baseURL": "https://jcleigh.github.io/",
+    "languageCode": "en-us",
+    "title": "jcleigh",
+    "theme": "hugo-theme-m10c",
+    "params": {
+        "author": "jcleigh",
+        "avatar": "picard-cropped.webp",
+        "description": "",
+        "menu_item_separator": " ~ ",
+        "social": [
+            { "name": "github", "url": "https://github.com/jcleigh", "icon": "brand-github" },
+            { "name": "linkedin", "url": "https://www.linkedin.com/in/jcleigh/", "icon": "brand-linkedin" }
+        ]            
+    },
+    "menus": {
+        "main": [ 
+            { "identifier": "about", "name": "About", "url": "/about/" },
+            { "identifier": "posts", "name": "Posts", "url": "/posts/" }
+        ]
+    }
+}
