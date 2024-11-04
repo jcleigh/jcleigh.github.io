@@ -1,2 +1,1 @@
-# jcleigh.github.io
-A personal blog site using Jekyll and minimal-mistakes theme
+This repository is empty. Any task executed on it should be considered a new capability and needs to be created.
