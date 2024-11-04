@@ -1,0 +1,10 @@
+main:
+  - title: "Posts"
+    url: /year-archive/
+  - title: "Categories"
+    url: /categories/
+  - title: "Search"
+    url: /search/
+  - title: "About"
+    url: /about/
+  - search: true

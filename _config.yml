@@ -1,0 +1,115 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: jcleigh
+# email: your-email@example.com
+description: >- # this means to ignore newlines until "baseurl:"
+  tech, software, and other things
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://jcleigh.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+github_username:  jcleigh
+repository: "jcleigh/jcleigh.github.io"
+
+# Build settings
+markdown: kramdown
+theme: minimal-mistakes-jekyll
+plugins:
+  - jekyll-feed
+  - jekyll-archives
+  #- jekyll-search
+include: ["_pages"]
+
+jekyll-archives:
+  enabled:
+    - posts
+  layouts:
+    posts: archive
+  permalinks:
+    posts: /posts/:year/:month/:day/:title/
+
+# jekyll_search:
+#   input_placeholder: "Search..."
+#   result_template: "<div><a href='{{ site.baseurl }}{{ url }}'>{{ title }}</a></div>"
+#   template: "<div class='search-result'><h2>{{ title }}</h2><p>{{ content }}</p></div>"
+
+# Theme settings
+author:
+  name     : "Jordan Cleigh"
+  bio      : "Software Engineer"
+  location : "Des Moines, IA, USA"
+  avatar   : "/assets/images/picard-facepalm.webp"
+  links:
+    - label: "jcleigh"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/jcleigh"
+    - label: "jcleigh"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://linkedin.com/jcleigh"
+
+defaults:
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: false
+      share: true
+      related: true
+  # _docs
+  # - scope:
+  #     path: ""
+  #     type: docs
+  #   values:
+  #     sidebar:
+  #       nav: "docs"
+
+minimal_mistakes_skin: "dark" #"default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+
+logo: "/assets/images/picard-facepalm.webp"
+
+# sidebar:
+#   - title: "jcleigh"
+#     image: "/assets/images/picard-facepalm.webp"
+#     image_alt: "picard facepalm"
+#     text: "My blog"
+
+footer:
+  links:
+    - label: "Source"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/jcleigh/jcleigh.github.io"
+
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
