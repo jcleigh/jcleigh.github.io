@@ -11,6 +11,19 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir);
 }
 
+// Function to generate top menu bar
+function generateTopMenuBar() {
+  return `
+    <div class="title-bar">
+      <div class="title-bar-text">Menu</div>
+      <div class="title-bar-controls">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  `;
+}
+
 // Read all markdown files from posts directory
 fs.readdir(postsDir, (err, files) => {
   if (err) {
@@ -36,6 +49,7 @@ fs.readdir(postsDir, (err, files) => {
         <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
       </head>
       <body>
+        ${generateTopMenuBar()}
         <div class="window">
           <div class="title-bar">
             <div class="title-bar-text">${data.title}</div>
@@ -66,6 +80,7 @@ fs.readdir(postsDir, (err, files) => {
       <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
     </head>
     <body>
+      ${generateTopMenuBar()}
       <div class="window">
         <div class="title-bar">
           <div class="title-bar-text">Home</div>
@@ -93,6 +108,7 @@ fs.readdir(postsDir, (err, files) => {
       <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
     </head>
     <body>
+      ${generateTopMenuBar()}
       <div class="window">
         <div class="title-bar">
           <div class="title-bar-text">About</div>
