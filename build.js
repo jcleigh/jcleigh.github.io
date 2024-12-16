@@ -11,6 +11,11 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir);
 }
 
+// Ensure styles.css is copied to public directory
+const stylesSrc = path.join(__dirname, 'styles.css');
+const stylesDest = path.join(publicDir, 'styles.css');
+fs.copyFileSync(stylesSrc, stylesDest);
+
 // Function to generate top menu bar
 function generateTopMenuBar() {
   return `
@@ -47,6 +52,7 @@ fs.readdir(postsDir, (err, files) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${data.title}</title>
         <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
+        <link rel="stylesheet" href="styles.css">
       </head>
       <body>
         ${generateTopMenuBar()}
@@ -78,6 +84,7 @@ fs.readdir(postsDir, (err, files) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Home</title>
       <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
+      <link rel="stylesheet" href="styles.css">
     </head>
     <body>
       ${generateTopMenuBar()}
@@ -106,6 +113,7 @@ fs.readdir(postsDir, (err, files) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>About</title>
       <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
+      <link rel="stylesheet" href="styles.css">
     </head>
     <body>
       ${generateTopMenuBar()}
