@@ -20,10 +20,33 @@ fs.copyFileSync(stylesSrc, stylesDest);
 function generateTopMenuBar() {
   return `
     <div class="title-bar">
-      <div class="title-bar-text">Menu</div>
+      <div class="title-bar-text">jcleigh</div>
       <div class="title-bar-controls">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+        <div class="dropdown">
+          <button class="dropbtn">File</button>
+          <div class="dropdown-content">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">Posts</button>
+          <div class="dropdown-content">
+            <!-- Add links to posts here -->
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">Categories</button>
+          <div class="dropdown-content">
+            <!-- Add links to categories here -->
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">About</button>
+          <div class="dropdown-content">
+            <a href="about.html">About</a>
+          </div>
+        </div>
       </div>
     </div>
   `;
