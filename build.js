@@ -33,11 +33,18 @@ fs.readdir(postsDir, (err, files) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${data.title}</title>
+        <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
       </head>
       <body>
-        <h1>${data.title}</h1>
-        <p><em>By ${data.author} on ${data.date}</em></p>
-        ${htmlContent}
+        <div class="window">
+          <div class="title-bar">
+            <div class="title-bar-text">${data.title}</div>
+          </div>
+          <div class="window-body">
+            <p><em>By ${data.author} on ${data.date}</em></p>
+            ${htmlContent}
+          </div>
+        </div>
       </body>
       </html>
     `;
@@ -56,13 +63,20 @@ fs.readdir(postsDir, (err, files) => {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Home</title>
+      <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
     </head>
     <body>
-      <h1>Home</h1>
-      <ul>
-        ${posts.map(post => `<li><a href="${post.file}">${post.title}</a> - ${post.date}</li>`).join('')}
-      </ul>
-      <a href="about.html">About</a>
+      <div class="window">
+        <div class="title-bar">
+          <div class="title-bar-text">Home</div>
+        </div>
+        <div class="window-body">
+          <ul>
+            ${posts.map(post => `<li><a href="${post.file}">${post.title}</a> - ${post.date}</li>`).join('')}
+          </ul>
+          <a href="about.html">About</a>
+        </div>
+      </div>
     </body>
     </html>
   `;
@@ -76,11 +90,18 @@ fs.readdir(postsDir, (err, files) => {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>About</title>
+      <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
     </head>
     <body>
-      <h1>About</h1>
-      <p>This is the About page of the blog.</p>
-      <a href="index.html">Home</a>
+      <div class="window">
+        <div class="title-bar">
+          <div class="title-bar-text">About</div>
+        </div>
+        <div class="window-body">
+          <p>This is the About page of the blog.</p>
+          <a href="index.html">Home</a>
+        </div>
+      </div>
     </body>
     </html>
   `;
