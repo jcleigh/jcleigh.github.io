@@ -1,6 +1,6 @@
 # jcleigh
 
-This repository contains the source code for my personal blog site hosted on GitHub Pages at [https://jcleigh.github.io](https://jcleigh.github.io). The site is built using Jekyll and the `minimal-mistakes` theme.
+This repository contains the source code for my personal blog site hosted on GitHub Pages at [https://jcleigh.github.io](https://jcleigh.github.io). The site is built using Node.js and the `marked` library for markdown rendering.
 
 ## Building and Publishing the Site
 
@@ -12,19 +12,19 @@ To build and publish the site using GitHub Pages, follow these steps:
    cd jcleigh.github.io
    ```
 
-2. Install the required gems:
+2. Install the required dependencies:
    ```sh
-   bundle install
+   npm install
    ```
 
 3. Build the site:
    ```sh
-   bundle exec jekyll build
+   npm run build
    ```
 
 4. Serve the site locally:
    ```sh
-   bundle exec jekyll serve
+   node server.js
    ```
 
 5. Commit and push your changes to the `main` branch. GitHub Pages will automatically build and publish the site.
