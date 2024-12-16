@@ -24,7 +24,7 @@ To build and publish the site using GitHub Pages, follow these steps:
 
 4. Serve the site locally:
    ```sh
-   node server.js
+   npx http-server ./public
    ```
 
 5. Commit and push your changes to the `main` branch. GitHub Pages will automatically build and publish the site.
