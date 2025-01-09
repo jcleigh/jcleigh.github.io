@@ -1,57 +1,95 @@
 
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Home</title>
-      <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
+      <title>jcleigh's blog</title>
+      <link rel="stylesheet" href="https://unpkg.com/98.css">
       <link rel="stylesheet" href="styles.css">
     </head>
+
     <body>
-      
-    <div class="title-bar">
-      <div class="title-bar-text">jcleigh</div>
-      <div class="title-bar-controls">
-        <div class="dropdown">
-          <button class="dropbtn">File</button>
-          <div class="dropdown-content">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
+      <div id="info" class="window main-window">
+        <div id="title-bar" class="title-bar">
+          <div class="title-bar-text"><img src="help_book_big-1.png" height="12px"/> Information</div>
+          <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize"></button>
+            <button aria-label="Close"></button>
           </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn">Posts</button>
-          <div class="dropdown-content">
-            <!-- Add links to posts here -->
-          </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn">Categories</button>
-          <div class="dropdown-content">
-            <!-- Add links to categories here -->
-          </div>
-        </div>
-        <div class="dropdown">
-          <button class="dropbtn">About</button>
-          <div class="dropdown-content">
-            <a href="about.html">About</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-      <div class="window">
-        <div class="title-bar">
-          <div class="title-bar-text">Home</div>
         </div>
         <div class="window-body">
+          <p>Name: Jordan Cleigh</p>
+          <p>Occupation: Staff Software Engineer @ <a href="https://fmgsuite.com" target="_blank">FMG</a></p>
+          <p>Topics: Technology, Software Engineering, Music Production</p>
+        </div>
+        <div class="status-bar">
+          <p class="status-bar-field"><a href="https://linkedin.com/in/jcleigh" target="_blank">LinkedIn</a></p>
+          <p class="status-bar-field"><a href="https://github.com/jcleigh" target="_blank">GitHub</a></p>
+          <p class="status-bar-field">Attributions</p> <!-- TODO: make a popup for icon and css attributions -->
+        </div>
+      </div>
+
+      <div id="posts" class="window main-window">
+        <div id="title-bar" class="title-bar">
+          <div class="title-bar-text"><img src="notepad-0.png" height="12px"/> Posts</div>
+          <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize"></button>
+            <button aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="window-body">
+          <marquee>This blog is currently under construction. Please check back later for real content.</marquee>
+          <p class="post-header">Recent Posts:</p>
           <ul>
             <li><a href="2024-11-02-test.html">Test</a> - 2024-11-02 12:54:53 +0000</li><li><a href="2024-11-03-jordan.html">Jordan test</a> - 2024-11-03 02:54:53 +0000</li><li><a href="2024-11-04-welcome-to-jekyll.html">Welcome to Jekyll!</a> - 2024-11-04 02:54:53 +0000</li>
           </ul>
-          <a href="about.html">About</a>
-        </div>
-      </div>
-    </body>
-    </html>
+    </div>
+  </div>
+
+  <script>
+    function makeDraggable(element) {
+      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      const titleBar = element.querySelector('.title-bar');
+      if (titleBar) {
+        titleBar.onmousedown = dragMouseDown;
+      }
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        element.style.top = (element.offsetTop - pos2) + "px";
+        element.style.left = (element.offsetLeft - pos1) + "px";
+      }
+
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      makeDraggable(document.getElementById('info'));
+      makeDraggable(document.getElementById('posts'));
+    });
+  </script>
+</body>
+
+</html>
   
