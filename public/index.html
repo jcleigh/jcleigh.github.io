@@ -34,7 +34,7 @@
 
       <div id="posts" class="window main-window">
         <div id="title-bar" class="title-bar">
-          <div class="title-bar-text"><img src="notepad-0.png" height="12px"/> Posts</div>
+          <div class="title-bar-text"><img src="directory_open_cabinet-0.png" height="12px"/> Posts</div>
           <div class="title-bar-controls">
             <button aria-label="Minimize"></button>
             <button aria-label="Maximize"></button>
@@ -45,51 +45,100 @@
           <marquee>This blog is currently under construction. Please check back later for real content.</marquee>
           <p class="post-header">Recent Posts:</p>
           <ul>
-            <li><a href="2024-11-02-test.html">Test</a> - 2024-11-02 12:54:53 +0000</li><li><a href="2024-11-03-jordan.html">Jordan test</a> - 2024-11-03 02:54:53 +0000</li><li><a href="2024-11-04-welcome-to-jekyll.html">Welcome to Jekyll!</a> - 2024-11-04 02:54:53 +0000</li>
+            <li><a href="#" class="post-link" data-title="Test" data-content="%3Cp%3EThis%20is%20a%20test%20post!%3C%2Fp%3E%0A%3Cp%3EHope%20you%26%2339%3Bre%20having%20a%20wonderful%20day!%3C%2Fp%3E%0A">Test</a> - 2024-11-02 12:54:53 +0000</li>
+            <li><a href="#" class="post-link" data-title="Jordan test" data-content="%3Cp%3EI%20am%20testing%20this%20because%20it%20doesn%26%2339%3Bt%20make%20sense%20to%20me%3C%2Fp%3E%0A">Jordan test</a> - 2024-11-03 02:54:53 +0000</li>
+            <li><a href="#" class="post-link" data-title="Welcome to Jekyll!" data-content="%3Cp%3EYou%E2%80%99ll%20find%20this%20post%20in%20your%20%3Ccode%3E_posts%3C%2Fcode%3E%20directory.%20Go%20ahead%20and%20edit%20it%20and%20re-build%20the%20site%20to%20see%20your%20changes.%20You%20can%20rebuild%20the%20site%20in%20many%20different%20ways%2C%20but%20the%20most%20common%20way%20is%20to%20run%20%3Ccode%3Ejekyll%20serve%3C%2Fcode%3E%2C%20which%20launches%20a%20web%20server%20and%20auto-regenerates%20your%20site%20when%20a%20file%20is%20updated.%3C%2Fp%3E%0A%3Cp%3ETo%20add%20new%20posts%2C%20simply%20add%20a%20file%20in%20the%20%3Ccode%3E_posts%3C%2Fcode%3E%20directory%20that%20follows%20the%20convention%20%3Ccode%3EYYYY-MM-DD-name-of-post.ext%3C%2Fcode%3E%20and%20includes%20the%20necessary%20front%20matter.%20Take%20a%20look%20at%20the%20source%20for%20this%20post%20to%20get%20an%20idea%20about%20how%20it%20works.%3C%2Fp%3E%0A%3Cp%3EJekyll%20also%20offers%20powerful%20support%20for%20code%20snippets%3A%3C%2Fp%3E%0A%3Cp%3E%7B%25%20highlight%20ruby%20%25%7D%0Adef%20print_hi(name)%0A%20%20puts%20%26quot%3BHi%2C%20%23%7Bname%7D%26quot%3B%0Aend%0Aprint_hi(%26%2339%3BTom%26%2339%3B)%0A%23%3D%26gt%3B%20prints%20%26%2339%3BHi%2C%20Tom%26%2339%3B%20to%20STDOUT.%0A%7B%25%20endhighlight%20%25%7D%3C%2Fp%3E%0A%3Cp%3ECheck%20out%20the%20%3Ca%20href%3D%22https%3A%2F%2Fjekyllrb.com%2Fdocs%2Fhome%22%3EJekyll%20docs%3C%2Fa%3E%20for%20more%20info%20on%20how%20to%20get%20the%20most%20out%20of%20Jekyll.%20File%20all%20bugs%2Ffeature%20requests%20at%20%3Ca%20href%3D%22https%3A%2F%2Fgithub.com%2Fjekyll%2Fjekyll%22%3EJekyll%E2%80%99s%20GitHub%20repo%3C%2Fa%3E.%20If%20you%20have%20questions%2C%20you%20can%20ask%20them%20on%20%3Ca%20href%3D%22https%3A%2F%2Ftalk.jekyllrb.com%2F%22%3EJekyll%20Talk%3C%2Fa%3E.%3C%2Fp%3E%0A">Welcome to Jekyll!</a> - 2024-11-04 02:54:53 +0000</li>
           </ul>
-    </div>
-  </div>
+        </div>
+      </div>
 
-  <script>
-    function makeDraggable(element) {
-      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-      const titleBar = element.querySelector('.title-bar');
-      if (titleBar) {
-        titleBar.onmousedown = dragMouseDown;
-      }
+      <div id="post-content" class="window main-window">
+        <div class="title-bar">
+          <div class="title-bar-text"><img src="notepad-0.png" height="12px"/> <span id="post-title">About</span></div>
+          <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize"></button>
+            <button aria-label="Close" onclick="document.getElementById('post-content').style.display='none'"></button>
+          </div>
+        </div>
+        <div class="window-body" id="post-body">
+          <p>Welcome to my blog! Here you will find posts about technology, software engineering, and music production. Stay tuned for more updates!</p>
+        </div>
+      </div>
 
-      function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
-      }
+      <script>
+        function makeDraggable(element) {
+          let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+          const titleBar = element.querySelector('.title-bar');
+          if (titleBar) {
+            titleBar.onmousedown = dragMouseDown;
+          }
 
-      function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        element.style.top = (element.offsetTop - pos2) + "px";
-        element.style.left = (element.offsetLeft - pos1) + "px";
-      }
+          function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+          }
 
-      function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
-      }
-    }
+          function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+          }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      makeDraggable(document.getElementById('info'));
-      makeDraggable(document.getElementById('posts'));
-    });
-  </script>
-</body>
+          function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+          }
+        }
 
-</html>
+        document.addEventListener('DOMContentLoaded', () => {
+          makeDraggable(document.getElementById('info'));
+          makeDraggable(document.getElementById('posts'));
+          makeDraggable(document.getElementById('post-content'));
+
+          document.querySelectorAll('.post-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              const content = decodeURIComponent(e.target.getAttribute('data-content'));
+              const title = e.target.getAttribute('data-title');
+              const postContentDiv = document.getElementById('post-content');
+              document.getElementById('post-body').innerHTML = content;
+              document.getElementById('post-title').textContent = title;
+              postContentDiv.style.display = 'block';
+            });
+          });
+
+          document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(button => {
+            button.addEventListener('click', () => {
+              const postContentDiv = document.getElementById('post-content');
+              postContentDiv.style.display = 'none';
+            });
+          });
+
+          document.querySelectorAll('.title-bar-controls button[aria-label="Maximize"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+              const windowElement = e.target.closest('.window');
+              windowElement.classList.toggle('maximized');
+              if (windowElement.classList.contains('maximized')) {
+                e.target.setAttribute('aria-label', 'Restore');
+              } else {
+                e.target.setAttribute('aria-label', 'Maximize');
+              }
+            });
+          });
+
+        });
+      </script>
+    </body>
+
+    </html>
   

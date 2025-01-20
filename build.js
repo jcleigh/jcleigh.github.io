@@ -58,7 +58,7 @@ fs.readdir(postsDir, (err, files) => {
     const outputFilePath = path.join(publicDir, file.replace('.md', '.html'));
     fs.writeFileSync(outputFilePath, html, 'utf-8');
 
-    posts.push({ title: data.title, date: data.date, file: file.replace('.md', '.html') });
+    posts.push({ title: data.title, date: data.date, file: file.replace('.md', '.html'), content: htmlContent });
   });
 
   // Generate home page
@@ -98,7 +98,7 @@ fs.readdir(postsDir, (err, files) => {
 
       <div id="posts" class="window main-window">
         <div id="title-bar" class="title-bar">
-          <div class="title-bar-text"><img src="notepad-0.png" height="12px"/> Posts</div>
+          <div class="title-bar-text"><img src="directory_open_cabinet-0.png" height="12px"/> Posts</div>
           <div class="title-bar-controls">
             <button aria-label="Minimize"></button>
             <button aria-label="Maximize"></button>
@@ -109,53 +109,100 @@ fs.readdir(postsDir, (err, files) => {
           <marquee>This blog is currently under construction. Please check back later for real content.</marquee>
           <p class="post-header">Recent Posts:</p>
           <ul>
-            ${posts.map(post => `<li><a href="${post.file}">${post.title}</a> - ${post.date}</li>`).join('')}
+            ${posts.map(post => `<li><a href="#" class="post-link" data-title="${post.title}" data-content="${encodeURIComponent(post.content)}">${post.title}</a> - ${post.date}</li>`).join('\r\n            ')}
           </ul>
-    </div>
-  </div>
+        </div>
+      </div>
 
-  <script>
-    function makeDraggable(element) {
-      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-      const titleBar = element.querySelector('.title-bar');
-      if (titleBar) {
-        titleBar.onmousedown = dragMouseDown;
-      }
+      <div id="post-content" class="window main-window">
+        <div class="title-bar">
+          <div class="title-bar-text"><img src="notepad-0.png" height="12px"/> <span id="post-title">About</span></div>
+          <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize"></button>
+            <button aria-label="Close" onclick="document.getElementById('post-content').style.display='none'"></button>
+          </div>
+        </div>
+        <div class="window-body" id="post-body">
+          <p>Welcome to my blog! Here you will find posts about technology, software engineering, and music production. Stay tuned for more updates!</p>
+        </div>
+      </div>
 
-      function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
-      }
+      <script>
+        function makeDraggable(element) {
+          let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+          const titleBar = element.querySelector('.title-bar');
+          if (titleBar) {
+            titleBar.onmousedown = dragMouseDown;
+          }
 
-      function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        element.style.top = (element.offsetTop - pos2) + "px";
-        element.style.left = (element.offsetLeft - pos1) + "px";
-      }
+          function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+          }
 
-      function closeDragElement() {
-        document.onmouseup = null;
-        document.onmousemove = null;
-      }
-    }
+          function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            element.style.top = (element.offsetTop - pos2) + "px";
+            element.style.left = (element.offsetLeft - pos1) + "px";
+          }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      makeDraggable(document.getElementById('info'));
-      makeDraggable(document.getElementById('posts'));
-    });
-  </script>
-</body>
+          function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+          }
+        }
 
-</html>
+        document.addEventListener('DOMContentLoaded', () => {
+          makeDraggable(document.getElementById('info'));
+          makeDraggable(document.getElementById('posts'));
+          makeDraggable(document.getElementById('post-content'));
+
+          document.querySelectorAll('.post-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              const content = decodeURIComponent(e.target.getAttribute('data-content'));
+              const title = e.target.getAttribute('data-title');
+              const postContentDiv = document.getElementById('post-content');
+              document.getElementById('post-body').innerHTML = content;
+              document.getElementById('post-title').textContent = title;
+              postContentDiv.style.display = 'block';
+            });
+          });
+
+          document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(button => {
+            button.addEventListener('click', () => {
+              const postContentDiv = document.getElementById('post-content');
+              postContentDiv.style.display = 'none';
+            });
+          });
+
+          document.querySelectorAll('.title-bar-controls button[aria-label="Maximize"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+              const windowElement = e.target.closest('.window');
+              windowElement.classList.toggle('maximized');
+              if (windowElement.classList.contains('maximized')) {
+                e.target.setAttribute('aria-label', 'Restore');
+              } else {
+                e.target.setAttribute('aria-label', 'Maximize');
+              }
+            });
+          });
+
+        });
+      </script>
+    </body>
+
+    </html>
   `;
   fs.writeFileSync(path.join(publicDir, 'index.html'), homeHtml, 'utf-8');
 
