@@ -67,12 +67,16 @@
       </div>
 
       <!-- Windows 98 Taskbar -->
-      <div id="taskbar" class="window">
-        <div class="title-bar">
-          <div class="title-bar-text">Taskbar</div>
-        </div>
-        <div class="window-body" id="taskbar-buttons">
+      <div id="taskbar">
+        <button id="start-button">
+          <span style="font-size: 12px;">🪟</span>
+          Start
+        </button>
+        <div id="taskbar-buttons">
           <!-- Minimized windows will appear here -->
+        </div>
+        <div id="system-tray">
+          <span id="clock"></span>
         </div>
       </div>
 
@@ -144,10 +148,24 @@
           }
         }
 
+        function updateClock() {
+          const now = new Date();
+          const timeString = now.toLocaleTimeString('en-US', { 
+            hour12: true, 
+            hour: 'numeric', 
+            minute: '2-digit'
+          });
+          document.getElementById('clock').textContent = timeString;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
           makeDraggable(document.getElementById('info'));
           makeDraggable(document.getElementById('posts'));
           makeDraggable(document.getElementById('post-content'));
+
+          // Update clock immediately and then every minute
+          updateClock();
+          setInterval(updateClock, 60000);
 
           document.querySelectorAll('.post-link').forEach(link => {
             link.addEventListener('click', (e) => {
