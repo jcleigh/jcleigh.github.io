@@ -66,6 +66,16 @@
         </div>
       </div>
 
+      <!-- Windows 98 Taskbar -->
+      <div id="taskbar" class="window">
+        <div class="title-bar">
+          <div class="title-bar-text">Taskbar</div>
+        </div>
+        <div class="window-body" id="taskbar-buttons">
+          <!-- Minimized windows will appear here -->
+        </div>
+      </div>
+
       <script>
         function makeDraggable(element) {
           let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -100,6 +110,40 @@
           }
         }
 
+        function minimizeWindow(windowElement) {
+          // Hide the window
+          windowElement.style.display = 'none';
+          
+          // Get window info
+          const titleElement = windowElement.querySelector('.title-bar-text');
+          const windowTitle = titleElement ? titleElement.textContent.trim() : 'Window';
+          const windowId = windowElement.id;
+          
+          // Create taskbar button
+          const taskbarButtons = document.getElementById('taskbar-buttons');
+          const taskbarButton = document.createElement('button');
+          taskbarButton.className = 'taskbar-button';
+          taskbarButton.textContent = windowTitle;
+          taskbarButton.setAttribute('data-window-id', windowId);
+          taskbarButton.onclick = () => restoreWindow(windowId);
+          
+          taskbarButtons.appendChild(taskbarButton);
+        }
+
+        function restoreWindow(windowId) {
+          // Show the window
+          const windowElement = document.getElementById(windowId);
+          if (windowElement) {
+            windowElement.style.display = 'block';
+          }
+          
+          // Remove taskbar button
+          const taskbarButton = document.querySelector('[data-window-id="' + windowId + '"]');
+          if (taskbarButton) {
+            taskbarButton.remove();
+          }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
           makeDraggable(document.getElementById('info'));
           makeDraggable(document.getElementById('posts'));
@@ -118,9 +162,11 @@
           });
 
           document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(button => {
-            button.addEventListener('click', () => {
-              const postContentDiv = document.getElementById('post-content');
-              postContentDiv.style.display = 'none';
+            button.addEventListener('click', (e) => {
+              const windowElement = e.target.closest('.window');
+              if (windowElement && windowElement.id === 'post-content') {
+                minimizeWindow(windowElement);
+              }
             });
           });
 
