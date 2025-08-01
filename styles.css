@@ -24,6 +24,7 @@ body {
 .window {
   position: absolute;
   width: 400px;
+  z-index: 100;
 }
 
 .window-body {
