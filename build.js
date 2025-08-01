@@ -79,7 +79,7 @@ fs.readdir(postsDir, (err, files) => {
         <div id="title-bar" class="title-bar">
           <div class="title-bar-text"><img src="help_book_big-1.png" height="12px"/> Information</div>
           <div class="title-bar-controls">
-            <button aria-label="Minimize" disabled></button>
+            <button aria-label="Minimize"></button>
             <button aria-label="Maximize" disabled></button>
             <button aria-label="Close" disabled></button>
           </div>
@@ -100,7 +100,7 @@ fs.readdir(postsDir, (err, files) => {
         <div id="title-bar" class="title-bar">
           <div class="title-bar-text"><img src="directory_open_cabinet-0.png" height="12px"/> Posts</div>
           <div class="title-bar-controls">
-            <button aria-label="Minimize" disabled></button>
+            <button aria-label="Minimize"></button>
             <button aria-label="Maximize" disabled></button>
             <button aria-label="Close" disabled></button>
           </div>
@@ -189,6 +189,63 @@ fs.readdir(postsDir, (err, files) => {
           }
         }
 
+        let postWindowCounter = 0;
+        
+        function createPostWindow(title, content) {
+          postWindowCounter++;
+          const windowId = 'post-window-' + postWindowCounter;
+          
+          // Create the new window element
+          const postWindow = document.createElement('div');
+          postWindow.id = windowId;
+          postWindow.className = 'window main-window';
+          postWindow.style.top = (10 + (postWindowCounter * 30)) + 'px';
+          postWindow.style.left = (426 + (postWindowCounter * 30)) + 'px';
+          postWindow.style.width = '800px';
+          postWindow.style.height = '600px';
+          
+          postWindow.innerHTML = 
+            '<div class="title-bar">' +
+              '<div class="title-bar-text"><img src="notepad-0.png" height="12px"/> <span>' + title + '</span></div>' +
+              '<div class="title-bar-controls">' +
+                '<button aria-label="Minimize"></button>' +
+                '<button aria-label="Maximize"></button>' +
+                '<button aria-label="Close"></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="window-body">' +
+              content +
+            '</div>';
+          
+          // Add to body
+          document.body.appendChild(postWindow);
+          
+          // Make draggable
+          makeDraggable(postWindow);
+          
+          // Add event listeners for controls
+          const minimizeBtn = postWindow.querySelector('button[aria-label="Minimize"]');
+          const maximizeBtn = postWindow.querySelector('button[aria-label="Maximize"]');
+          const closeBtn = postWindow.querySelector('button[aria-label="Close"]');
+          
+          minimizeBtn.addEventListener('click', () => minimizeWindow(postWindow));
+          
+          maximizeBtn.addEventListener('click', (e) => {
+            postWindow.classList.toggle('maximized');
+            if (postWindow.classList.contains('maximized')) {
+              e.target.setAttribute('aria-label', 'Restore');
+            } else {
+              e.target.setAttribute('aria-label', 'Maximize');
+            }
+          });
+          
+          closeBtn.addEventListener('click', () => {
+            postWindow.remove();
+          });
+          
+          return postWindow;
+        }
+
         function minimizeWindow(windowElement) {
           // Hide the window
           windowElement.style.display = 'none';
@@ -198,11 +255,29 @@ fs.readdir(postsDir, (err, files) => {
           const windowTitle = titleElement ? titleElement.textContent.trim() : 'Window';
           const windowId = windowElement.id;
           
+          // Get the icon from the title bar
+          const iconElement = titleElement ? titleElement.querySelector('img') : null;
+          const iconSrc = iconElement ? iconElement.src : null;
+          
           // Create taskbar button
           const taskbarButtons = document.getElementById('taskbar-buttons');
           const taskbarButton = document.createElement('button');
           taskbarButton.className = 'taskbar-button';
-          taskbarButton.textContent = windowTitle;
+          
+          // Add icon if available
+          if (iconSrc) {
+            const iconImg = document.createElement('img');
+            iconImg.src = iconSrc;
+            iconImg.height = 12;
+            iconImg.style.marginRight = '4px';
+            taskbarButton.appendChild(iconImg);
+          }
+          
+          // Add text content
+          const textSpan = document.createElement('span');
+          textSpan.textContent = windowTitle;
+          taskbarButton.appendChild(textSpan);
+          
           taskbarButton.setAttribute('data-window-id', windowId);
           taskbarButton.onclick = () => restoreWindow(windowId);
           
@@ -247,17 +322,14 @@ fs.readdir(postsDir, (err, files) => {
               e.preventDefault();
               const content = decodeURIComponent(e.target.getAttribute('data-content'));
               const title = e.target.getAttribute('data-title');
-              const postContentDiv = document.getElementById('post-content');
-              document.getElementById('post-body').innerHTML = content;
-              document.getElementById('post-title').textContent = title;
-              postContentDiv.style.display = 'block';
+              createPostWindow(title, content);
             });
           });
 
           document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(button => {
             button.addEventListener('click', (e) => {
               const windowElement = e.target.closest('.window');
-              if (windowElement && windowElement.id === 'post-content') {
+              if (windowElement) {
                 minimizeWindow(windowElement);
               }
             });

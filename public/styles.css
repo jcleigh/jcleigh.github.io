@@ -138,6 +138,8 @@ body {
   background: #c0c0c0;
   border: 1px outset #c0c0c0;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .taskbar-button:hover {
