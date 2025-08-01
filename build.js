@@ -128,6 +128,36 @@ fs.readdir(postsDir, (err, files) => {
         </div>
       </div>
 
+      <!-- Start Menu -->
+      <div id="start-menu" style="display: none;">
+        <div class="start-menu-header">
+          <span class="start-menu-title">Windows 98</span>
+        </div>
+        <div class="start-menu-items">
+          <div class="start-menu-item" onclick="openCalculator()">
+            <span class="start-menu-icon">🧮</span>
+            <span class="start-menu-text">Calculator</span>
+          </div>
+          <div class="start-menu-item" onclick="openNotepad()">
+            <span class="start-menu-icon">📝</span>
+            <span class="start-menu-text">Notepad</span>
+          </div>
+          <div class="start-menu-item" onclick="openMinesweeper()">
+            <span class="start-menu-icon">💣</span>
+            <span class="start-menu-text">Minesweeper</span>
+          </div>
+          <div class="start-menu-item" onclick="openSolitaire()">
+            <span class="start-menu-icon">🎯</span>
+            <span class="start-menu-text">Solitaire</span>
+          </div>
+          <div class="start-menu-separator"></div>
+          <div class="start-menu-item" onclick="window.location.reload()">
+            <span class="start-menu-icon">🔄</span>
+            <span class="start-menu-text">Refresh</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Windows 98 Taskbar -->
       <div id="taskbar">
         <button id="start-button">
@@ -317,6 +347,23 @@ fs.readdir(postsDir, (err, files) => {
           updateClock();
           setInterval(updateClock, 60000);
 
+          // Start menu functionality
+          const startButton = document.getElementById('start-button');
+          const startMenu = document.getElementById('start-menu');
+          
+          startButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = startMenu.style.display !== 'none';
+            startMenu.style.display = isVisible ? 'none' : 'block';
+          });
+
+          // Close start menu when clicking elsewhere
+          document.addEventListener('click', (e) => {
+            if (!startMenu.contains(e.target) && e.target !== startButton) {
+              startMenu.style.display = 'none';
+            }
+          });
+
           document.querySelectorAll('.post-link').forEach(link => {
             link.addEventListener('click', (e) => {
               e.preventDefault();
@@ -348,6 +395,357 @@ fs.readdir(postsDir, (err, files) => {
           });
 
         });
+
+        // Application functions
+        let appWindowCounter = 0;
+
+        function createAppWindow(title, content, width = '400px', height = '300px', icon = '📄') {
+          appWindowCounter++;
+          const windowId = 'app-window-' + appWindowCounter;
+          
+          const appWindow = document.createElement('div');
+          appWindow.id = windowId;
+          appWindow.className = 'window main-window';
+          appWindow.style.top = (50 + (appWindowCounter * 30)) + 'px';
+          appWindow.style.left = (50 + (appWindowCounter * 30)) + 'px';
+          appWindow.style.width = width;
+          appWindow.style.height = height;
+          appWindow.style.zIndex = 500 + appWindowCounter;
+          
+          appWindow.innerHTML = 
+            '<div class="title-bar">' +
+              '<div class="title-bar-text"><span style="font-size: 12px;">' + icon + '</span> ' + title + '</div>' +
+              '<div class="title-bar-controls">' +
+                '<button aria-label="Minimize"></button>' +
+                '<button aria-label="Maximize"></button>' +
+                '<button aria-label="Close"></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="window-body">' +
+              content +
+            '</div>';
+          
+          document.body.appendChild(appWindow);
+          makeDraggable(appWindow);
+          
+          const minimizeBtn = appWindow.querySelector('button[aria-label="Minimize"]');
+          const maximizeBtn = appWindow.querySelector('button[aria-label="Maximize"]');
+          const closeBtn = appWindow.querySelector('button[aria-label="Close"]');
+          
+          minimizeBtn.addEventListener('click', () => minimizeWindow(appWindow));
+          maximizeBtn.addEventListener('click', (e) => {
+            appWindow.classList.toggle('maximized');
+            e.target.setAttribute('aria-label', 
+              appWindow.classList.contains('maximized') ? 'Restore' : 'Maximize'
+            );
+          });
+          closeBtn.addEventListener('click', () => appWindow.remove());
+          
+          return appWindow;
+        }
+
+        function openCalculator() {
+          const calculatorHTML = 
+            '<div style="text-align: center; padding: 10px;">' +
+              '<div id="calc-display" style="background: black; color: lime; font-family: monospace; font-size: 18px; padding: 8px; margin-bottom: 10px; text-align: right; border: 2px inset #c0c0c0;">0</div>' +
+              '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">' +
+                '<button onclick="clearCalc()" style="grid-column: span 2;">Clear</button>' +
+                '<button onclick="calcOperation(&quot;/&quot;)">/</button>' +
+                '<button onclick="calcOperation(&quot;*&quot;)">*</button>' +
+                '<button onclick="calcNumber(&quot;7&quot;)">7</button>' +
+                '<button onclick="calcNumber(&quot;8&quot;)">8</button>' +
+                '<button onclick="calcNumber(&quot;9&quot;)">9</button>' +
+                '<button onclick="calcOperation(&quot;-&quot;)">-</button>' +
+                '<button onclick="calcNumber(&quot;4&quot;)">4</button>' +
+                '<button onclick="calcNumber(&quot;5&quot;)">5</button>' +
+                '<button onclick="calcNumber(&quot;6&quot;)">6</button>' +
+                '<button onclick="calcOperation(&quot;+&quot;)">+</button>' +
+                '<button onclick="calcNumber(&quot;1&quot;)">1</button>' +
+                '<button onclick="calcNumber(&quot;2&quot;)">2</button>' +
+                '<button onclick="calcNumber(&quot;3&quot;)">3</button>' +
+                '<button onclick="calcEquals()" style="grid-row: span 2; writing-mode: vertical-lr;">=</button>' +
+                '<button onclick="calcNumber(&quot;0&quot;)" style="grid-column: span 2;">0</button>' +
+                '<button onclick="calcNumber(&quot;.&quot;)">.</button>' +
+              '</div>' +
+            '</div>';
+          
+          createAppWindow('Calculator', calculatorHTML, '250px', '350px', '🧮');
+          document.getElementById('start-menu').style.display = 'none';
+        }
+
+        let calcValue = '0';
+        let calcOperator = null;
+        let calcPrevious = null;
+        let calcWaitingForOperand = false;
+
+        function updateCalcDisplay() {
+          const display = document.getElementById('calc-display');
+          if (display) display.textContent = calcValue;
+        }
+
+        function calcNumber(num) {
+          if (calcWaitingForOperand) {
+            calcValue = num;
+            calcWaitingForOperand = false;
+          } else {
+            calcValue = calcValue === '0' ? num : calcValue + num;
+          }
+          updateCalcDisplay();
+        }
+
+        function calcOperation(op) {
+          if (calcPrevious === null) {
+            calcPrevious = calcValue;
+          } else if (calcOperator) {
+            const result = calculate();
+            calcValue = String(result);
+            calcPrevious = calcValue;
+            updateCalcDisplay();
+          }
+          calcWaitingForOperand = true;
+          calcOperator = op;
+        }
+
+        function calcEquals() {
+          if (calcPrevious !== null && calcOperator) {
+            calcValue = String(calculate());
+            calcPrevious = null;
+            calcOperator = null;
+            calcWaitingForOperand = true;
+            updateCalcDisplay();
+          }
+        }
+
+        function clearCalc() {
+          calcValue = '0';
+          calcOperator = null;
+          calcPrevious = null;
+          calcWaitingForOperand = false;
+          updateCalcDisplay();
+        }
+
+        function calculate() {
+          const prev = parseFloat(calcPrevious);
+          const current = parseFloat(calcValue);
+          
+          switch (calcOperator) {
+            case '+': return prev + current;
+            case '-': return prev - current;
+            case '*': return prev * current;
+            case '/': return current !== 0 ? prev / current : 0;
+            default: return current;
+          }
+        }
+
+        function openNotepad() {
+          const notepadHTML = 
+            '<div style="height: 100%; display: flex; flex-direction: column;">' +
+              '<div style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px;">' +
+                '<button onclick="saveNote()" style="font-size: 10px; margin-right: 5px;">Save</button>' +
+                '<button onclick="clearNote()" style="font-size: 10px;">Clear</button>' +
+              '</div>' +
+              '<textarea id="notepad-text" style="flex: 1; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none;" placeholder="Start typing..."></textarea>' +
+            '</div>';
+          
+          createAppWindow('Notepad', notepadHTML, '500px', '400px', '📝');
+          document.getElementById('start-menu').style.display = 'none';
+        }
+
+        function saveNote() {
+          const text = document.getElementById('notepad-text').value;
+          if (text.trim()) {
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'note.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        }
+
+        function clearNote() {
+          const notepad = document.getElementById('notepad-text');
+          if (notepad) notepad.value = '';
+        }
+
+        function openMinesweeper() {
+          const minesweeperHTML = 
+            '<div style="text-align: center; padding: 10px;">' +
+              '<div style="margin-bottom: 10px;">' +
+                '<button onclick="initMinesweeper()" style="font-size: 16px;">😊 New Game</button>' +
+                '<span style="margin-left: 10px;">Mines: <span id="mine-count">10</span></span>' +
+              '</div>' +
+              '<div id="minefield" style="display: inline-block; border: 2px inset #c0c0c0; background: #c0c0c0;"></div>' +
+            '</div>';
+          
+          const window = createAppWindow('Minesweeper', minesweeperHTML, '300px', '350px', '💣');
+          document.getElementById('start-menu').style.display = 'none';
+          
+          setTimeout(() => initMinesweeper(), 100);
+        }
+
+        let mineField = [];
+        let mineCount = 10;
+        let gameSize = 9;
+
+        function initMinesweeper() {
+          const minefield = document.getElementById('minefield');
+          if (!minefield) return;
+          
+          mineField = [];
+          for (let i = 0; i < gameSize; i++) {
+            mineField[i] = [];
+            for (let j = 0; j < gameSize; j++) {
+              mineField[i][j] = { mine: false, revealed: false, flagged: false, count: 0 };
+            }
+          }
+          
+          // Place mines
+          let placed = 0;
+          while (placed < mineCount) {
+            const x = Math.floor(Math.random() * gameSize);
+            const y = Math.floor(Math.random() * gameSize);
+            if (!mineField[x][y].mine) {
+              mineField[x][y].mine = true;
+              placed++;
+            }
+          }
+          
+          // Calculate numbers
+          for (let i = 0; i < gameSize; i++) {
+            for (let j = 0; j < gameSize; j++) {
+              if (!mineField[i][j].mine) {
+                let count = 0;
+                for (let di = -1; di <= 1; di++) {
+                  for (let dj = -1; dj <= 1; dj++) {
+                    const ni = i + di, nj = j + dj;
+                    if (ni >= 0 && ni < gameSize && nj >= 0 && nj < gameSize && mineField[ni][nj].mine) {
+                      count++;
+                    }
+                  }
+                }
+                mineField[i][j].count = count;
+              }
+            }
+          }
+          
+          renderMinefield();
+        }
+
+        function renderMinefield() {
+          const minefield = document.getElementById('minefield');
+          if (!minefield) return;
+          
+          minefield.innerHTML = '';
+          minefield.style.display = 'grid';
+          minefield.style.gridTemplateColumns = 'repeat(' + gameSize + ', 20px)';
+          minefield.style.gap = '1px';
+          minefield.style.padding = '3px';
+          
+          for (let i = 0; i < gameSize; i++) {
+            for (let j = 0; j < gameSize; j++) {
+              const cell = document.createElement('button');
+              cell.style.width = '20px';
+              cell.style.height = '20px';
+              cell.style.fontSize = '10px';
+              cell.style.padding = '0';
+              cell.style.border = '1px outset #c0c0c0';
+              cell.style.background = '#c0c0c0';
+              
+              if (mineField[i][j].revealed) {
+                cell.style.border = '1px inset #c0c0c0';
+                cell.style.background = '#f0f0f0';
+                if (mineField[i][j].mine) {
+                  cell.textContent = '💣';
+                } else if (mineField[i][j].count > 0) {
+                  cell.textContent = mineField[i][j].count;
+                }
+              } else if (mineField[i][j].flagged) {
+                cell.textContent = '🚩';
+              }
+              
+              cell.onclick = () => revealCell(i, j);
+              cell.oncontextmenu = (e) => {
+                e.preventDefault();
+                toggleFlag(i, j);
+              };
+              
+              minefield.appendChild(cell);
+            }
+          }
+        }
+
+        function revealCell(x, y) {
+          if (mineField[x][y].revealed || mineField[x][y].flagged) return;
+          
+          mineField[x][y].revealed = true;
+          
+          if (mineField[x][y].mine) {
+            alert('Game Over!');
+            for (let i = 0; i < gameSize; i++) {
+              for (let j = 0; j < gameSize; j++) {
+                mineField[i][j].revealed = true;
+              }
+            }
+          } else if (mineField[x][y].count === 0) {
+            for (let di = -1; di <= 1; di++) {
+              for (let dj = -1; dj <= 1; dj++) {
+                const ni = x + di, nj = y + dj;
+                if (ni >= 0 && ni < gameSize && nj >= 0 && nj < gameSize) {
+                  revealCell(ni, nj);
+                }
+              }
+            }
+          }
+          
+          renderMinefield();
+        }
+
+        function toggleFlag(x, y) {
+          if (!mineField[x][y].revealed) {
+            mineField[x][y].flagged = !mineField[x][y].flagged;
+            renderMinefield();
+          }
+        }
+
+        function openSolitaire() {
+          const solitaireHTML = 
+            '<div style="text-align: center; padding: 10px;">' +
+              '<div style="margin-bottom: 10px;">' +
+                '<button onclick="newSolitaireGame()" style="font-size: 12px;">New Game</button>' +
+              '</div>' +
+              '<div style="background: #008000; border: 2px inset #c0c0c0; padding: 10px; height: 200px; overflow: auto;">' +
+                '<div style="color: white; font-weight: bold;">Simple Klondike Solitaire</div>' +
+                '<div id="solitaire-board" style="margin-top: 10px;">' +
+                  '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">' +
+                    '<div style="color: white;">Stock</div>' +
+                    '<div style="color: white;">Foundations</div>' +
+                  '</div>' +
+                  '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;">' +
+                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 1</div>' +
+                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 2</div>' +
+                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 3</div>' +
+                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 4</div>' +
+                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 5</div>' +
+                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 6</div>' +
+                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 7</div>' +
+                  '</div>' +
+                  '<div style="margin-top: 10px; color: white; font-size: 10px;">Click New Game to shuffle and deal cards!</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          
+          createAppWindow('Solitaire', solitaireHTML, '500px', '350px', '🎯');
+          document.getElementById('start-menu').style.display = 'none';
+        }
+
+        function newSolitaireGame() {
+          const board = document.getElementById('solitaire-board');
+          if (board) {
+            board.innerHTML = '<div style="color: white; text-align: center; margin-top: 50px;">Game shuffled! Enjoy your game of Solitaire.</div>';
+          }
+        }
       </script>
     </body>
 
