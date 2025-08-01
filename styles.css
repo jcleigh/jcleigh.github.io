@@ -68,7 +68,7 @@ body {
   top: 0 !important;
   left: 0 !important;
   width: calc(100% - 6px) !important;
-  height: calc(100% - 6px) !important;
+  height: calc(100% - 38px) !important; /* Account for taskbar (30px) + margin (8px) */
   z-index: 1000;
 }
 

@@ -104,8 +104,21 @@
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            element.style.top = (element.offsetTop - pos2) + "px";
-            element.style.left = (element.offsetLeft - pos1) + "px";
+            
+            // Calculate new position
+            let newTop = element.offsetTop - pos2;
+            let newLeft = element.offsetLeft - pos1;
+            
+            // Constrain to viewport bounds and avoid taskbar
+            const taskbarHeight = 32; // Taskbar height + small margin
+            const maxTop = window.innerHeight - element.offsetHeight - taskbarHeight;
+            const maxLeft = window.innerWidth - element.offsetWidth;
+            
+            newTop = Math.max(0, Math.min(newTop, maxTop));
+            newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+            
+            element.style.top = newTop + "px";
+            element.style.left = newLeft + "px";
           }
 
           function closeDragElement() {
