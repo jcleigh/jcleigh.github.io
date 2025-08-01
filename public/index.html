@@ -15,9 +15,9 @@
         <div id="title-bar" class="title-bar">
           <div class="title-bar-text"><img src="help_book_big-1.png" height="12px"/> Information</div>
           <div class="title-bar-controls">
-            <button aria-label="Minimize"></button>
-            <button aria-label="Maximize"></button>
-            <button aria-label="Close"></button>
+            <button aria-label="Minimize" disabled></button>
+            <button aria-label="Maximize" disabled></button>
+            <button aria-label="Close" disabled></button>
           </div>
         </div>
         <div class="window-body">
@@ -36,9 +36,9 @@
         <div id="title-bar" class="title-bar">
           <div class="title-bar-text"><img src="directory_open_cabinet-0.png" height="12px"/> Posts</div>
           <div class="title-bar-controls">
-            <button aria-label="Minimize"></button>
-            <button aria-label="Maximize"></button>
-            <button aria-label="Close"></button>
+            <button aria-label="Minimize" disabled></button>
+            <button aria-label="Maximize" disabled></button>
+            <button aria-label="Close" disabled></button>
           </div>
         </div>
         <div class="window-body">
@@ -66,6 +66,20 @@
         </div>
       </div>
 
+      <!-- Windows 98 Taskbar -->
+      <div id="taskbar">
+        <button id="start-button">
+          <span style="font-size: 12px;">🪟</span>
+          Start
+        </button>
+        <div id="taskbar-buttons">
+          <!-- Minimized windows will appear here -->
+        </div>
+        <div id="system-tray">
+          <span id="clock"></span>
+        </div>
+      </div>
+
       <script>
         function makeDraggable(element) {
           let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -90,8 +104,21 @@
             pos2 = pos4 - e.clientY;
             pos3 = e.clientX;
             pos4 = e.clientY;
-            element.style.top = (element.offsetTop - pos2) + "px";
-            element.style.left = (element.offsetLeft - pos1) + "px";
+            
+            // Calculate new position
+            let newTop = element.offsetTop - pos2;
+            let newLeft = element.offsetLeft - pos1;
+            
+            // Constrain to viewport bounds and avoid taskbar
+            const taskbarHeight = 32; // Taskbar height + small margin
+            const maxTop = window.innerHeight - element.offsetHeight - taskbarHeight;
+            const maxLeft = window.innerWidth - element.offsetWidth;
+            
+            newTop = Math.max(0, Math.min(newTop, maxTop));
+            newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+            
+            element.style.top = newTop + "px";
+            element.style.left = newLeft + "px";
           }
 
           function closeDragElement() {
@@ -100,10 +127,58 @@
           }
         }
 
+        function minimizeWindow(windowElement) {
+          // Hide the window
+          windowElement.style.display = 'none';
+          
+          // Get window info
+          const titleElement = windowElement.querySelector('.title-bar-text');
+          const windowTitle = titleElement ? titleElement.textContent.trim() : 'Window';
+          const windowId = windowElement.id;
+          
+          // Create taskbar button
+          const taskbarButtons = document.getElementById('taskbar-buttons');
+          const taskbarButton = document.createElement('button');
+          taskbarButton.className = 'taskbar-button';
+          taskbarButton.textContent = windowTitle;
+          taskbarButton.setAttribute('data-window-id', windowId);
+          taskbarButton.onclick = () => restoreWindow(windowId);
+          
+          taskbarButtons.appendChild(taskbarButton);
+        }
+
+        function restoreWindow(windowId) {
+          // Show the window
+          const windowElement = document.getElementById(windowId);
+          if (windowElement) {
+            windowElement.style.display = 'block';
+          }
+          
+          // Remove taskbar button
+          const taskbarButton = document.querySelector('[data-window-id="' + windowId + '"]');
+          if (taskbarButton) {
+            taskbarButton.remove();
+          }
+        }
+
+        function updateClock() {
+          const now = new Date();
+          const timeString = now.toLocaleTimeString('en-US', { 
+            hour12: true, 
+            hour: 'numeric', 
+            minute: '2-digit'
+          });
+          document.getElementById('clock').textContent = timeString;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
           makeDraggable(document.getElementById('info'));
           makeDraggable(document.getElementById('posts'));
           makeDraggable(document.getElementById('post-content'));
+
+          // Update clock immediately and then every minute
+          updateClock();
+          setInterval(updateClock, 60000);
 
           document.querySelectorAll('.post-link').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -118,9 +193,11 @@
           });
 
           document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(button => {
-            button.addEventListener('click', () => {
-              const postContentDiv = document.getElementById('post-content');
-              postContentDiv.style.display = 'none';
+            button.addEventListener('click', (e) => {
+              const windowElement = e.target.closest('.window');
+              if (windowElement && windowElement.id === 'post-content') {
+                minimizeWindow(windowElement);
+              }
             });
           });
 
