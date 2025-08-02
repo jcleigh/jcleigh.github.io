@@ -138,6 +138,28 @@ fs.readdir(postsDir, (err, files) => {
         </div>
       </div>
 
+      <!-- Start Menu -->
+      <div id="start-menu" style="display: none;">
+        <div class="start-menu-header">
+          <span class="start-menu-title">jcleigh.dev</span>
+        </div>
+        <div class="start-menu-items">
+          <div class="start-menu-item" onclick="openCalculator()">
+            <span class="start-menu-icon">🧮</span>
+            <span class="start-menu-text">Calculator</span>
+          </div>
+          <div class="start-menu-item" onclick="openNotepad()">
+            <span class="start-menu-icon">📝</span>
+            <span class="start-menu-text">Notepad</span>
+          </div>
+          <div class="start-menu-separator"></div>
+          <div class="start-menu-item" onclick="window.location.reload()">
+            <span class="start-menu-icon">🔄</span>
+            <span class="start-menu-text">Refresh</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Windows 98 Taskbar -->
       <div id="taskbar">
         <button id="start-button">
@@ -327,6 +349,23 @@ fs.readdir(postsDir, (err, files) => {
           updateClock();
           setInterval(updateClock, 60000);
 
+          // Start menu functionality
+          const startButton = document.getElementById('start-button');
+          const startMenu = document.getElementById('start-menu');
+          
+          startButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = startMenu.style.display !== 'none';
+            startMenu.style.display = isVisible ? 'none' : 'block';
+          });
+
+          // Close start menu when clicking elsewhere
+          document.addEventListener('click', (e) => {
+            if (!startMenu.contains(e.target) && e.target !== startButton) {
+              startMenu.style.display = 'none';
+            }
+          });
+
           document.querySelectorAll('.post-link').forEach(link => {
             link.addEventListener('click', (e) => {
               e.preventDefault();
@@ -358,6 +397,247 @@ fs.readdir(postsDir, (err, files) => {
           });
 
         });
+
+        // Application functions
+        let appWindowCounter = 0;
+
+        function createAppWindow(title, content, width = '400px', height = '300px', icon = '📄') {
+          appWindowCounter++;
+          const windowId = 'app-window-' + appWindowCounter;
+          
+          const appWindow = document.createElement('div');
+          appWindow.id = windowId;
+          appWindow.className = 'window main-window';
+          appWindow.style.top = (50 + (appWindowCounter * 30)) + 'px';
+          appWindow.style.left = (50 + (appWindowCounter * 30)) + 'px';
+          appWindow.style.width = width;
+          appWindow.style.height = height;
+          appWindow.style.zIndex = 500 + appWindowCounter;
+          
+          appWindow.innerHTML = 
+            '<div class="title-bar">' +
+              '<div class="title-bar-text"><span style="font-size: 12px;">' + icon + '</span> ' + title + '</div>' +
+              '<div class="title-bar-controls">' +
+                '<button aria-label="Minimize"></button>' +
+                '<button aria-label="Maximize"></button>' +
+                '<button aria-label="Close"></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="window-body">' +
+              content +
+            '</div>';
+          
+          document.body.appendChild(appWindow);
+          makeDraggable(appWindow);
+          
+          const minimizeBtn = appWindow.querySelector('button[aria-label="Minimize"]');
+          const maximizeBtn = appWindow.querySelector('button[aria-label="Maximize"]');
+          const closeBtn = appWindow.querySelector('button[aria-label="Close"]');
+          
+          minimizeBtn.addEventListener('click', () => minimizeWindow(appWindow));
+          maximizeBtn.addEventListener('click', (e) => {
+            appWindow.classList.toggle('maximized');
+            e.target.setAttribute('aria-label', 
+              appWindow.classList.contains('maximized') ? 'Restore' : 'Maximize'
+            );
+          });
+          closeBtn.addEventListener('click', () => appWindow.remove());
+          
+          return appWindow;
+        }
+
+        function openCalculator() {
+          const calculatorHTML = 
+            '<div style="text-align: center; padding: 10px;">' +
+              '<div id="calc-display" style="background: black; color: lime; font-family: monospace; font-size: 18px; padding: 8px; margin-bottom: 10px; text-align: right; border: 2px inset #c0c0c0;">0</div>' +
+              '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">' +
+                '<button onclick="clearCalc()" style="grid-column: span 2;">Clear</button>' +
+                '<button onclick="calcOperation(&quot;/&quot;)">/</button>' +
+                '<button onclick="calcOperation(&quot;*&quot;)">*</button>' +
+                '<button onclick="calcNumber(&quot;7&quot;)">7</button>' +
+                '<button onclick="calcNumber(&quot;8&quot;)">8</button>' +
+                '<button onclick="calcNumber(&quot;9&quot;)">9</button>' +
+                '<button onclick="calcOperation(&quot;-&quot;)">-</button>' +
+                '<button onclick="calcNumber(&quot;4&quot;)">4</button>' +
+                '<button onclick="calcNumber(&quot;5&quot;)">5</button>' +
+                '<button onclick="calcNumber(&quot;6&quot;)">6</button>' +
+                '<button onclick="calcOperation(&quot;+&quot;)">+</button>' +
+                '<button onclick="calcNumber(&quot;1&quot;)">1</button>' +
+                '<button onclick="calcNumber(&quot;2&quot;)">2</button>' +
+                '<button onclick="calcNumber(&quot;3&quot;)">3</button>' +
+                '<button onclick="calcEquals()" style="grid-row: span 2; writing-mode: vertical-lr;">=</button>' +
+                '<button onclick="calcNumber(&quot;0&quot;)" style="grid-column: span 2;">0</button>' +
+                '<button onclick="calcNumber(&quot;.&quot;)">.</button>' +
+              '</div>' +
+            '</div>';
+          
+          createAppWindow('Calculator', calculatorHTML, '350px', '220px', '🧮');
+          document.getElementById('start-menu').style.display = 'none';
+        }
+
+        let calcValue = '0';
+        let calcOperator = null;
+        let calcPrevious = null;
+        let calcWaitingForOperand = false;
+
+        function updateCalcDisplay() {
+          const display = document.getElementById('calc-display');
+          if (display) display.textContent = calcValue;
+        }
+
+        function calcNumber(num) {
+          if (calcWaitingForOperand) {
+            calcValue = num;
+            calcWaitingForOperand = false;
+          } else {
+            calcValue = calcValue === '0' ? num : calcValue + num;
+          }
+          updateCalcDisplay();
+        }
+
+        function calcOperation(op) {
+          if (calcPrevious === null) {
+            calcPrevious = calcValue;
+          } else if (calcOperator) {
+            const result = calculate();
+            calcValue = String(result);
+            calcPrevious = calcValue;
+            updateCalcDisplay();
+          }
+          calcWaitingForOperand = true;
+          calcOperator = op;
+        }
+
+        function calcEquals() {
+          if (calcPrevious !== null && calcOperator) {
+            calcValue = String(calculate());
+            calcPrevious = null;
+            calcOperator = null;
+            calcWaitingForOperand = true;
+            updateCalcDisplay();
+          }
+        }
+
+        function clearCalc() {
+          calcValue = '0';
+          calcOperator = null;
+          calcPrevious = null;
+          calcWaitingForOperand = false;
+          updateCalcDisplay();
+        }
+
+        function calculate() {
+          const prev = parseFloat(calcPrevious);
+          const current = parseFloat(calcValue);
+          
+          switch (calcOperator) {
+            case '+': return prev + current;
+            case '-': return prev - current;
+            case '*': return prev * current;
+            case '/': return current !== 0 ? prev / current : 0;
+            default: return current;
+          }
+        }
+
+        function openNotepad() {
+          // Create a custom window structure for Notepad with menu bar outside window-body
+          appWindowCounter++;
+          const windowId = 'app-window-' + appWindowCounter;
+          
+          const notepadWindow = document.createElement('div');
+          notepadWindow.id = windowId;
+          notepadWindow.className = 'window main-window';
+          notepadWindow.style.top = (50 + (appWindowCounter * 30)) + 'px';
+          notepadWindow.style.left = (50 + (appWindowCounter * 30)) + 'px';
+          notepadWindow.style.width = '500px';
+          notepadWindow.style.height = '500px';
+          notepadWindow.style.zIndex = 500 + appWindowCounter;
+          
+          notepadWindow.innerHTML = 
+            '<div class="title-bar">' +
+              '<div class="title-bar-text"><span style="font-size: 12px;">📝</span> Notepad</div>' +
+              '<div class="title-bar-controls">' +
+                '<button aria-label="Minimize"></button>' +
+                '<button aria-label="Maximize"></button>' +
+                '<button aria-label="Close"></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; height: 18px; margin-top: 18px;">' +
+              '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;file&quot;)" onmouseleave="hideNotepadMenu()">File</span>' +
+              '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;edit&quot;)" onmouseleave="hideNotepadMenu()">Edit</span>' +
+              '<div id="notepad-file-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 4px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
+                '<div class="notepad-menu-item" onclick="saveNote(); hideNotepadMenu();">Save</div>' +
+              '</div>' +
+              '<div id="notepad-edit-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 36px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
+                '<div class="notepad-menu-item" onclick="clearNote(); hideNotepadMenu();">Clear</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="window-body" style="height: calc(100% - 48px); padding: 4px;">' +
+              '<textarea id="notepad-text" style="width: 100%; height: 100%; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none; box-sizing: border-box;" placeholder="Start typing..."></textarea>' +
+            '</div>' +
+            '<style>' +
+              '.notepad-menu { padding: 2px 8px; cursor: pointer; border: 1px solid transparent; margin-right: 2px; }' +
+              '.notepad-menu:hover { background: #316ac5; color: white; border: 1px solid #316ac5; }' +
+              '.notepad-menu-item { padding: 2px 16px; cursor: pointer; }' +
+              '.notepad-menu-item:hover { background: #316ac5; color: white; }' +
+            '</style>';
+          
+          document.body.appendChild(notepadWindow);
+          makeDraggable(notepadWindow);
+          
+          const minimizeBtn = notepadWindow.querySelector('button[aria-label="Minimize"]');
+          const maximizeBtn = notepadWindow.querySelector('button[aria-label="Maximize"]');
+          const closeBtn = notepadWindow.querySelector('button[aria-label="Close"]');
+          
+          minimizeBtn.addEventListener('click', () => minimizeWindow(notepadWindow));
+          maximizeBtn.addEventListener('click', (e) => {
+            notepadWindow.classList.toggle('maximized');
+            e.target.setAttribute('aria-label', 
+              notepadWindow.classList.contains('maximized') ? 'Restore' : 'Maximize'
+            );
+          });
+          closeBtn.addEventListener('click', () => notepadWindow.remove());
+          
+          document.getElementById('start-menu').style.display = 'none';
+        }
+
+        function saveNote() {
+          const text = document.getElementById('notepad-text').value;
+          if (text.trim()) {
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'note.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+          }
+        }
+
+        function clearNote() {
+          const notepad = document.getElementById('notepad-text');
+          if (notepad) notepad.value = '';
+        }
+
+        function showNotepadMenu(menuElement, menuType) {
+          // Hide all menus first
+          hideNotepadMenu();
+          
+          // Show the specific menu
+          const menuId = 'notepad-' + menuType + '-menu';
+          const menu = document.getElementById(menuId);
+          if (menu) {
+            menu.style.display = 'block';
+          }
+        }
+
+        function hideNotepadMenu() {
+          const fileMenu = document.getElementById('notepad-file-menu');
+          const editMenu = document.getElementById('notepad-edit-menu');
+          if (fileMenu) fileMenu.style.display = 'none';
+          if (editMenu) editMenu.style.display = 'none';
+        }
+
       </script>
     </body>
 
