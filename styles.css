@@ -121,7 +121,6 @@ body {
   gap: 2px;
   padding: 0 4px;
   background: #c0c0c0;
-  border: 1px inset #c0c0c0;
   height: 20px;
   margin-right: 4px;
 }
@@ -136,6 +135,7 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   background: #c0c0c0;
+  border: 1px outset #c0c0c0;
   cursor: pointer;
   display: flex;
   align-items: center;
