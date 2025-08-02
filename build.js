@@ -531,8 +531,8 @@ fs.readdir(postsDir, (err, files) => {
 
         function openNotepad() {
           const notepadHTML = 
-            '<div style="height: 100%; display: flex; flex-direction: column;">' +
-              '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative;">' +
+            '<div style="height: calc(100% - 10px); display: flex; flex-direction: column; margin-top: 5px;">' +
+              '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; margin-bottom: 8px;">' +
                 '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;file&quot;)" onmouseleave="hideNotepadMenu()">File</span>' +
                 '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;edit&quot;)" onmouseleave="hideNotepadMenu()">Edit</span>' +
                 '<div id="notepad-file-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 4px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
@@ -542,7 +542,7 @@ fs.readdir(postsDir, (err, files) => {
                   '<div class="notepad-menu-item" onclick="clearNote(); hideNotepadMenu();">Clear</div>' +
                 '</div>' +
               '</div>' +
-              '<textarea id="notepad-text" style="flex: 1; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none;" placeholder="Start typing..."></textarea>' +
+              '<textarea id="notepad-text" style="flex: 1; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none; min-height: 0;" placeholder="Start typing..."></textarea>' +
             '</div>' +
             '<style>' +
               '.notepad-menu { padding: 2px 8px; cursor: pointer; border: 1px solid transparent; margin-right: 2px; }' +

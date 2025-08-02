@@ -31,6 +31,11 @@ body {
   padding-top: 10px;
 }
 
+.main-window .window-body {
+  height: calc(100% - 30px); /* Account for title bar height */
+  padding: 4px;
+}
+
 .window-body a {
   text-decoration: none;
 }

@@ -31,6 +31,11 @@ body {
   padding-top: 10px;
 }
 
+.main-window .window-body {
+  height: calc(100% - 30px); /* Account for title bar height */
+  padding: 4px;
+}
+
 .window-body a {
   text-decoration: none;
 }
@@ -120,8 +125,7 @@ body {
   align-items: center;
   gap: 2px;
   padding: 0 4px;
-  background: #808080;
-  border: 1px inset #c0c0c0;
+  background: #c0c0c0;
   height: 20px;
   margin-right: 4px;
 }
