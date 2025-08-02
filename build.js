@@ -16,6 +16,13 @@ const stylesSrc = path.join(__dirname, 'styles.css');
 const stylesDest = path.join(publicDir, 'styles.css');
 fs.copyFileSync(stylesSrc, stylesDest);
 
+// Copy jordan.png portrait image to public directory
+const jordanSrc = path.join(__dirname, 'assets', 'images', 'jordan.png');
+const jordanDest = path.join(publicDir, 'jordan.png');
+if (fs.existsSync(jordanSrc)) {
+  fs.copyFileSync(jordanSrc, jordanDest);
+}
+
 // Read all markdown files from posts directory
 fs.readdir(postsDir, (err, files) => {
   if (err) {
@@ -84,10 +91,13 @@ fs.readdir(postsDir, (err, files) => {
             <button aria-label="Close" disabled></button>
           </div>
         </div>
-        <div class="window-body">
-          <p>Name: Jordan Cleigh</p>
-          <p>Occupation: Staff Software Engineer @ <a href="https://fmgsuite.com" target="_blank">FMG</a></p>
-          <p>Topics: Technology, Software Engineering, Music Production</p>
+        <div class="window-body info-window-body">
+          <img src="jordan.png" alt="Jordan Cleigh portrait" class="portrait-image">
+          <div class="info-text">
+            <p>Name: Jordan Cleigh</p>
+            <p>Occupation: Staff Software Engineer @ <a href="https://fmgsuite.com" target="_blank">FMG</a></p>
+            <p>Topics: Technology, Software Engineering, Music Production</p>
+          </div>
         </div>
         <div class="status-bar">
           <p class="status-bar-field"><a href="https://linkedin.com/in/jcleigh" target="_blank">LinkedIn</a></p>
