@@ -468,19 +468,40 @@
         }
 
         function openNotepad() {
-          const notepadHTML = 
-            '<div style="height: calc(100% - 10px); display: flex; flex-direction: column; margin-top: 5px;">' +
-              '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; margin-bottom: 8px;">' +
-                '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;file&quot;)" onmouseleave="hideNotepadMenu()">File</span>' +
-                '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;edit&quot;)" onmouseleave="hideNotepadMenu()">Edit</span>' +
-                '<div id="notepad-file-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 4px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
-                  '<div class="notepad-menu-item" onclick="saveNote(); hideNotepadMenu();">Save</div>' +
-                '</div>' +
-                '<div id="notepad-edit-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 36px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
-                  '<div class="notepad-menu-item" onclick="clearNote(); hideNotepadMenu();">Clear</div>' +
-                '</div>' +
+          // Create a custom window structure for Notepad with menu bar outside window-body
+          appWindowCounter++;
+          const windowId = 'app-window-' + appWindowCounter;
+          
+          const notepadWindow = document.createElement('div');
+          notepadWindow.id = windowId;
+          notepadWindow.className = 'window main-window';
+          notepadWindow.style.top = (50 + (appWindowCounter * 30)) + 'px';
+          notepadWindow.style.left = (50 + (appWindowCounter * 30)) + 'px';
+          notepadWindow.style.width = '500px';
+          notepadWindow.style.height = '500px';
+          notepadWindow.style.zIndex = 500 + appWindowCounter;
+          
+          notepadWindow.innerHTML = 
+            '<div class="title-bar">' +
+              '<div class="title-bar-text"><span style="font-size: 12px;">📝</span> Notepad</div>' +
+              '<div class="title-bar-controls">' +
+                '<button aria-label="Minimize"></button>' +
+                '<button aria-label="Maximize"></button>' +
+                '<button aria-label="Close"></button>' +
               '</div>' +
-              '<textarea id="notepad-text" style="flex: 1; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none; min-height: 0;" placeholder="Start typing..."></textarea>' +
+            '</div>' +
+            '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; height: 18px; margin-top: 18px;">' +
+              '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;file&quot;)" onmouseleave="hideNotepadMenu()">File</span>' +
+              '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;edit&quot;)" onmouseleave="hideNotepadMenu()">Edit</span>' +
+              '<div id="notepad-file-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 4px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
+                '<div class="notepad-menu-item" onclick="saveNote(); hideNotepadMenu();">Save</div>' +
+              '</div>' +
+              '<div id="notepad-edit-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 36px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
+                '<div class="notepad-menu-item" onclick="clearNote(); hideNotepadMenu();">Clear</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="window-body" style="height: calc(100% - 48px); padding: 4px;">' +
+              '<textarea id="notepad-text" style="width: 100%; height: 100%; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none; box-sizing: border-box;" placeholder="Start typing..."></textarea>' +
             '</div>' +
             '<style>' +
               '.notepad-menu { padding: 2px 8px; cursor: pointer; border: 1px solid transparent; margin-right: 2px; }' +
@@ -489,7 +510,22 @@
               '.notepad-menu-item:hover { background: #316ac5; color: white; }' +
             '</style>';
           
-          createAppWindow('Notepad', notepadHTML, '500px', '500px', '📝');
+          document.body.appendChild(notepadWindow);
+          makeDraggable(notepadWindow);
+          
+          const minimizeBtn = notepadWindow.querySelector('button[aria-label="Minimize"]');
+          const maximizeBtn = notepadWindow.querySelector('button[aria-label="Maximize"]');
+          const closeBtn = notepadWindow.querySelector('button[aria-label="Close"]');
+          
+          minimizeBtn.addEventListener('click', () => minimizeWindow(notepadWindow));
+          maximizeBtn.addEventListener('click', (e) => {
+            notepadWindow.classList.toggle('maximized');
+            e.target.setAttribute('aria-label', 
+              notepadWindow.classList.contains('maximized') ? 'Restore' : 'Maximize'
+            );
+          });
+          closeBtn.addEventListener('click', () => notepadWindow.remove());
+          
           document.getElementById('start-menu').style.display = 'none';
         }
 
