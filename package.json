@@ -4,7 +4,8 @@
   "description": "Personal blog site built with Node.js and markdown rendering",
   "main": "index.js",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "postinstall": "node copy-98css.js"
   },
   "dependencies": {
     "98.css": "^0.1.0",
