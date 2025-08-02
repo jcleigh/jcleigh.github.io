@@ -227,4 +227,23 @@ body {
   background: #808080;
   margin: 2px 8px;
   border-top: 1px solid #dfdfdf;
+  
+/* Portrait styling for Information window */
+.info-window-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.portrait-image {
+  max-width: 80px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+  border: 1px solid #808080;
+  flex-shrink: 0;
+}
+
+.info-text {
+  flex: 1;
 }
