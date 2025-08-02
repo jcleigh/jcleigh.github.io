@@ -177,7 +177,7 @@ body {
   max-height: 100px;
   width: auto;
   height: auto;
-  border: 1px solid #808080;
+  margin-top: 5px;
   flex-shrink: 0;
 }
 
