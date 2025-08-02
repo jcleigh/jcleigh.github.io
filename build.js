@@ -131,7 +131,7 @@ fs.readdir(postsDir, (err, files) => {
       <!-- Start Menu -->
       <div id="start-menu" style="display: none;">
         <div class="start-menu-header">
-          <span class="start-menu-title">Windows 98</span>
+          <span class="start-menu-title">jcleigh.dev</span>
         </div>
         <div class="start-menu-items">
           <div class="start-menu-item" onclick="openCalculator()">
@@ -141,14 +141,6 @@ fs.readdir(postsDir, (err, files) => {
           <div class="start-menu-item" onclick="openNotepad()">
             <span class="start-menu-icon">📝</span>
             <span class="start-menu-text">Notepad</span>
-          </div>
-          <div class="start-menu-item" onclick="openMinesweeper()">
-            <span class="start-menu-icon">💣</span>
-            <span class="start-menu-text">Minesweeper</span>
-          </div>
-          <div class="start-menu-item" onclick="openSolitaire()">
-            <span class="start-menu-icon">🎯</span>
-            <span class="start-menu-text">Solitaire</span>
           </div>
           <div class="start-menu-separator"></div>
           <div class="start-menu-item" onclick="window.location.reload()">
@@ -469,7 +461,7 @@ fs.readdir(postsDir, (err, files) => {
               '</div>' +
             '</div>';
           
-          createAppWindow('Calculator', calculatorHTML, '250px', '350px', '🧮');
+          createAppWindow('Calculator', calculatorHTML, '300px', '320px', '🧮');
           document.getElementById('start-menu').style.display = 'none';
         }
 
@@ -547,7 +539,7 @@ fs.readdir(postsDir, (err, files) => {
               '<textarea id="notepad-text" style="flex: 1; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none;" placeholder="Start typing..."></textarea>' +
             '</div>';
           
-          createAppWindow('Notepad', notepadHTML, '500px', '400px', '📝');
+          createAppWindow('Notepad', notepadHTML, '500px', '500px', '📝');
           document.getElementById('start-menu').style.display = 'none';
         }
 
@@ -569,183 +561,6 @@ fs.readdir(postsDir, (err, files) => {
           if (notepad) notepad.value = '';
         }
 
-        function openMinesweeper() {
-          const minesweeperHTML = 
-            '<div style="text-align: center; padding: 10px;">' +
-              '<div style="margin-bottom: 10px;">' +
-                '<button onclick="initMinesweeper()" style="font-size: 16px;">😊 New Game</button>' +
-                '<span style="margin-left: 10px;">Mines: <span id="mine-count">10</span></span>' +
-              '</div>' +
-              '<div id="minefield" style="display: inline-block; border: 2px inset #c0c0c0; background: #c0c0c0;"></div>' +
-            '</div>';
-          
-          const window = createAppWindow('Minesweeper', minesweeperHTML, '300px', '350px', '💣');
-          document.getElementById('start-menu').style.display = 'none';
-          
-          setTimeout(() => initMinesweeper(), 100);
-        }
-
-        let mineField = [];
-        let mineCount = 10;
-        let gameSize = 9;
-
-        function initMinesweeper() {
-          const minefield = document.getElementById('minefield');
-          if (!minefield) return;
-          
-          mineField = [];
-          for (let i = 0; i < gameSize; i++) {
-            mineField[i] = [];
-            for (let j = 0; j < gameSize; j++) {
-              mineField[i][j] = { mine: false, revealed: false, flagged: false, count: 0 };
-            }
-          }
-          
-          // Place mines
-          let placed = 0;
-          while (placed < mineCount) {
-            const x = Math.floor(Math.random() * gameSize);
-            const y = Math.floor(Math.random() * gameSize);
-            if (!mineField[x][y].mine) {
-              mineField[x][y].mine = true;
-              placed++;
-            }
-          }
-          
-          // Calculate numbers
-          for (let i = 0; i < gameSize; i++) {
-            for (let j = 0; j < gameSize; j++) {
-              if (!mineField[i][j].mine) {
-                let count = 0;
-                for (let di = -1; di <= 1; di++) {
-                  for (let dj = -1; dj <= 1; dj++) {
-                    const ni = i + di, nj = j + dj;
-                    if (ni >= 0 && ni < gameSize && nj >= 0 && nj < gameSize && mineField[ni][nj].mine) {
-                      count++;
-                    }
-                  }
-                }
-                mineField[i][j].count = count;
-              }
-            }
-          }
-          
-          renderMinefield();
-        }
-
-        function renderMinefield() {
-          const minefield = document.getElementById('minefield');
-          if (!minefield) return;
-          
-          minefield.innerHTML = '';
-          minefield.style.display = 'grid';
-          minefield.style.gridTemplateColumns = 'repeat(' + gameSize + ', 20px)';
-          minefield.style.gap = '1px';
-          minefield.style.padding = '3px';
-          
-          for (let i = 0; i < gameSize; i++) {
-            for (let j = 0; j < gameSize; j++) {
-              const cell = document.createElement('button');
-              cell.style.width = '20px';
-              cell.style.height = '20px';
-              cell.style.fontSize = '10px';
-              cell.style.padding = '0';
-              cell.style.border = '1px outset #c0c0c0';
-              cell.style.background = '#c0c0c0';
-              
-              if (mineField[i][j].revealed) {
-                cell.style.border = '1px inset #c0c0c0';
-                cell.style.background = '#f0f0f0';
-                if (mineField[i][j].mine) {
-                  cell.textContent = '💣';
-                } else if (mineField[i][j].count > 0) {
-                  cell.textContent = mineField[i][j].count;
-                }
-              } else if (mineField[i][j].flagged) {
-                cell.textContent = '🚩';
-              }
-              
-              cell.onclick = () => revealCell(i, j);
-              cell.oncontextmenu = (e) => {
-                e.preventDefault();
-                toggleFlag(i, j);
-              };
-              
-              minefield.appendChild(cell);
-            }
-          }
-        }
-
-        function revealCell(x, y) {
-          if (mineField[x][y].revealed || mineField[x][y].flagged) return;
-          
-          mineField[x][y].revealed = true;
-          
-          if (mineField[x][y].mine) {
-            alert('Game Over!');
-            for (let i = 0; i < gameSize; i++) {
-              for (let j = 0; j < gameSize; j++) {
-                mineField[i][j].revealed = true;
-              }
-            }
-          } else if (mineField[x][y].count === 0) {
-            for (let di = -1; di <= 1; di++) {
-              for (let dj = -1; dj <= 1; dj++) {
-                const ni = x + di, nj = y + dj;
-                if (ni >= 0 && ni < gameSize && nj >= 0 && nj < gameSize) {
-                  revealCell(ni, nj);
-                }
-              }
-            }
-          }
-          
-          renderMinefield();
-        }
-
-        function toggleFlag(x, y) {
-          if (!mineField[x][y].revealed) {
-            mineField[x][y].flagged = !mineField[x][y].flagged;
-            renderMinefield();
-          }
-        }
-
-        function openSolitaire() {
-          const solitaireHTML = 
-            '<div style="text-align: center; padding: 10px;">' +
-              '<div style="margin-bottom: 10px;">' +
-                '<button onclick="newSolitaireGame()" style="font-size: 12px;">New Game</button>' +
-              '</div>' +
-              '<div style="background: #008000; border: 2px inset #c0c0c0; padding: 10px; height: 200px; overflow: auto;">' +
-                '<div style="color: white; font-weight: bold;">Simple Klondike Solitaire</div>' +
-                '<div id="solitaire-board" style="margin-top: 10px;">' +
-                  '<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">' +
-                    '<div style="color: white;">Stock</div>' +
-                    '<div style="color: white;">Foundations</div>' +
-                  '</div>' +
-                  '<div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;">' +
-                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 1</div>' +
-                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 2</div>' +
-                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 3</div>' +
-                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 4</div>' +
-                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 5</div>' +
-                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 6</div>' +
-                    '<div style="background: rgba(255,255,255,0.2); height: 60px; border: 1px dashed white; text-align: center; line-height: 60px; color: white; font-size: 10px;">Col 7</div>' +
-                  '</div>' +
-                  '<div style="margin-top: 10px; color: white; font-size: 10px;">Click New Game to shuffle and deal cards!</div>' +
-                '</div>' +
-              '</div>' +
-            '</div>';
-          
-          createAppWindow('Solitaire', solitaireHTML, '500px', '350px', '🎯');
-          document.getElementById('start-menu').style.display = 'none';
-        }
-
-        function newSolitaireGame() {
-          const board = document.getElementById('solitaire-board');
-          if (board) {
-            board.innerHTML = '<div style="color: white; text-align: center; margin-top: 50px;">Game shuffled! Enjoy your game of Solitaire.</div>';
-          }
-        }
       </script>
     </body>
 
