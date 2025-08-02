@@ -38,7 +38,7 @@ fs.readdir(postsDir, (err, files) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${data.title}</title>
-        <link rel="stylesheet" href="https://unpkg.com/98.css@0.1.0/dist/98.css">
+        <link rel="stylesheet" href="/98.css">
         <link rel="stylesheet" href="styles.css">
       </head>
       <body>
@@ -70,7 +70,7 @@ fs.readdir(postsDir, (err, files) => {
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>jcleigh's blog</title>
-      <link rel="stylesheet" href="https://unpkg.com/98.css">
+      <link rel="stylesheet" href="/98.css">
       <link rel="stylesheet" href="styles.css">
     </head>
 
