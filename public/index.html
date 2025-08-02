@@ -490,18 +490,18 @@
                 '<button aria-label="Close"></button>' +
               '</div>' +
             '</div>' +
-            '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; height: 18px; margin-top: 2px;">' +
-              '<span class="notepad-menu" onclick="toggleNotepadMenu(&quot;file&quot;)">File</span>' +
-              '<span class="notepad-menu" onclick="toggleNotepadMenu(&quot;edit&quot;)">Edit</span>' +
+            '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; height: 18px; margin-top: 18px;">' +
+              '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;file&quot;)" onmouseleave="hideNotepadMenu()">File</span>' +
+              '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;edit&quot;)" onmouseleave="hideNotepadMenu()">Edit</span>' +
               '<div id="notepad-file-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 4px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
-                '<div class="notepad-menu-item" onclick="saveNote(); hideAllNotepadMenus();">Save</div>' +
+                '<div class="notepad-menu-item" onclick="saveNote(); hideNotepadMenu();">Save</div>' +
               '</div>' +
               '<div id="notepad-edit-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 36px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
-                '<div class="notepad-menu-item" onclick="clearNote(); hideAllNotepadMenus();">Clear</div>' +
+                '<div class="notepad-menu-item" onclick="clearNote(); hideNotepadMenu();">Clear</div>' +
               '</div>' +
             '</div>' +
-            '<div class="window-body" style="height: calc(100% - 68px); padding: 4px;">' +
-              '<textarea id="notepad-text" style="width: calc(100% - 2px); height: calc(100% - 2px); border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none; box-sizing: border-box; margin: 0;" placeholder="Start typing..."></textarea>' +
+            '<div class="window-body" style="height: calc(100% - 48px); padding: 4px;">' +
+              '<textarea id="notepad-text" style="width: 100%; height: 100%; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none; box-sizing: border-box;" placeholder="Start typing..."></textarea>' +
             '</div>' +
             '<style>' +
               '.notepad-menu { padding: 2px 8px; cursor: pointer; border: 1px solid transparent; margin-right: 2px; }' +
@@ -526,13 +526,6 @@
           });
           closeBtn.addEventListener('click', () => notepadWindow.remove());
           
-          // Add event listener to close menus when clicking elsewhere
-          document.addEventListener('click', function(e) {
-            if (!e.target.closest('.notepad-menubar')) {
-              hideAllNotepadMenus();
-            }
-          });
-          
           document.getElementById('start-menu').style.display = 'none';
         }
 
@@ -552,25 +545,6 @@
         function clearNote() {
           const notepad = document.getElementById('notepad-text');
           if (notepad) notepad.value = '';
-        }
-
-        function toggleNotepadMenu(menuType) {
-          // Hide all menus first
-          hideAllNotepadMenus();
-          
-          // Show the specific menu
-          const menuId = 'notepad-' + menuType + '-menu';
-          const menu = document.getElementById(menuId);
-          if (menu) {
-            menu.style.display = 'block';
-          }
-        }
-
-        function hideAllNotepadMenus() {
-          const fileMenu = document.getElementById('notepad-file-menu');
-          const editMenu = document.getElementById('notepad-edit-menu');
-          if (fileMenu) fileMenu.style.display = 'none';
-          if (editMenu) editMenu.style.display = 'none';
         }
 
         function showNotepadMenu(menuElement, menuType) {
