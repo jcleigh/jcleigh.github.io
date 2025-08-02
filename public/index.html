@@ -399,7 +399,7 @@
               '</div>' +
             '</div>';
           
-          createAppWindow('Calculator', calculatorHTML, '300px', '320px', '🧮');
+          createAppWindow('Calculator', calculatorHTML, '350px', '220px', '🧮');
           document.getElementById('start-menu').style.display = 'none';
         }
 
@@ -470,12 +470,24 @@
         function openNotepad() {
           const notepadHTML = 
             '<div style="height: 100%; display: flex; flex-direction: column;">' +
-              '<div style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px;">' +
-                '<button onclick="saveNote()" style="font-size: 10px; margin-right: 5px;">Save</button>' +
-                '<button onclick="clearNote()" style="font-size: 10px;">Clear</button>' +
+              '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative;">' +
+                '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;file&quot;)" onmouseleave="hideNotepadMenu()">File</span>' +
+                '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;edit&quot;)" onmouseleave="hideNotepadMenu()">Edit</span>' +
+                '<div id="notepad-file-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 4px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
+                  '<div class="notepad-menu-item" onclick="saveNote(); hideNotepadMenu();">Save</div>' +
+                '</div>' +
+                '<div id="notepad-edit-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 36px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
+                  '<div class="notepad-menu-item" onclick="clearNote(); hideNotepadMenu();">Clear</div>' +
+                '</div>' +
               '</div>' +
               '<textarea id="notepad-text" style="flex: 1; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none;" placeholder="Start typing..."></textarea>' +
-            '</div>';
+            '</div>' +
+            '<style>' +
+              '.notepad-menu { padding: 2px 8px; cursor: pointer; border: 1px solid transparent; margin-right: 2px; }' +
+              '.notepad-menu:hover { background: #316ac5; color: white; border: 1px solid #316ac5; }' +
+              '.notepad-menu-item { padding: 2px 16px; cursor: pointer; }' +
+              '.notepad-menu-item:hover { background: #316ac5; color: white; }' +
+            '</style>';
           
           createAppWindow('Notepad', notepadHTML, '500px', '500px', '📝');
           document.getElementById('start-menu').style.display = 'none';
@@ -497,6 +509,25 @@
         function clearNote() {
           const notepad = document.getElementById('notepad-text');
           if (notepad) notepad.value = '';
+        }
+
+        function showNotepadMenu(menuElement, menuType) {
+          // Hide all menus first
+          hideNotepadMenu();
+          
+          // Show the specific menu
+          const menuId = 'notepad-' + menuType + '-menu';
+          const menu = document.getElementById(menuId);
+          if (menu) {
+            menu.style.display = 'block';
+          }
+        }
+
+        function hideNotepadMenu() {
+          const fileMenu = document.getElementById('notepad-file-menu');
+          const editMenu = document.getElementById('notepad-edit-menu');
+          if (fileMenu) fileMenu.style.display = 'none';
+          if (editMenu) editMenu.style.display = 'none';
         }
 
       </script>
