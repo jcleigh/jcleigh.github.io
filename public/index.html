@@ -182,27 +182,40 @@
           </div>
 
           <div class="wp8-tiles">
-            <button class="wp8-tile wp8-tile-wide wp8-post-tile wp8-post-button" data-title="Test" data-content="This is a test post!\n\nHope you're having a wonderful day!">
+            <button class="wp8-tile wp8-tile-wide wp8-post-tile wp8-post-button" data-title="Test" data-content="This is a test post!
+Hope you&#39;re having a wonderful day!
+">
               <div class="wp8-post-date">Nov 2</div>
               <div class="wp8-tile-content">
                 <h3 class="wp8-tile-title">Test</h3>
-                <p class="wp8-tile-subtitle">This is a test post! Hope you're having...</p>
+                <p class="wp8-tile-subtitle">This is a test post!
+Hope you&#39;re having a wond...</p>
               </div>
             </button>
-
-            <button class="wp8-tile wp8-tile-wide wp8-post-tile wp8-post-button" data-title="Jordan test" data-content="I am testing this because it doesn't make sense to me">
+            <button class="wp8-tile wp8-tile-wide wp8-post-tile wp8-post-button" data-title="Jordan test" data-content="I am testing this because it doesn&#39;t make sense to me
+">
               <div class="wp8-post-date">Nov 3</div>
               <div class="wp8-tile-content">
                 <h3 class="wp8-tile-title">Jordan test</h3>
-                <p class="wp8-tile-subtitle">I am testing this because it doesn't...</p>
+                <p class="wp8-tile-subtitle">I am testing this because it doesn&#39;t make sens...</p>
               </div>
             </button>
-
-            <button class="wp8-tile wp8-tile-wide wp8-post-tile wp8-post-button" data-title="Welcome to Jekyll!" data-content="You'll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes.">
+            <button class="wp8-tile wp8-tile-wide wp8-post-tile wp8-post-button" data-title="Welcome to Jekyll!" data-content="You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.
+To add new posts, simply add a file in the _posts directory that follows the convention YYYY-MM-DD-name-of-post.ext and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+Jekyll also offers powerful support for code snippets:
+{% highlight ruby %}
+def print_hi(name)
+  puts &quot;Hi, #{name}&quot;
+end
+print_hi(&#39;Tom&#39;)
+#=&gt; prints &#39;Hi, Tom&#39; to STDOUT.
+{% endhighlight %}
+Check out the Jekyll docs for more info on how to get the most out of Jekyll. File all bugs/feature requests at Jekyll’s GitHub repo. If you have questions, you can ask them on Jekyll Talk.
+">
               <div class="wp8-post-date">Nov 4</div>
               <div class="wp8-tile-content">
                 <h3 class="wp8-tile-title">Welcome to Jekyll!</h3>
-                <p class="wp8-tile-subtitle">You'll find this post in your _posts...</p>
+                <p class="wp8-tile-subtitle">You’ll find this post in your _posts directory. Go...</p>
               </div>
             </button>
           </div>
@@ -383,6 +396,76 @@
           });
           document.getElementById('clock').textContent = timeString;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+          makeDraggable(document.getElementById('info'));
+          makeDraggable(document.getElementById('posts'));
+          makeDraggable(document.getElementById('post-content'));
+
+          // Update clock immediately and then every minute
+          updateClock();
+          setInterval(updateClock, 60000);
+
+          // Start menu functionality
+          const startButton = document.getElementById('start-button');
+          const startMenu = document.getElementById('start-menu');
+          
+          startButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = startMenu.style.display !== 'none';
+            startMenu.style.display = isVisible ? 'none' : 'block';
+          });
+
+          // Close start menu when clicking elsewhere
+          document.addEventListener('click', (e) => {
+            if (!startMenu.contains(e.target) && e.target !== startButton) {
+              startMenu.style.display = 'none';
+            }
+          });
+
+          document.querySelectorAll('.post-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              const content = decodeURIComponent(e.target.getAttribute('data-content'));
+              const title = e.target.getAttribute('data-title');
+              createPostWindow(title, content);
+            });
+          });
+
+          document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+              const windowElement = e.target.closest('.window');
+              if (windowElement) {
+                minimizeWindow(windowElement);
+              }
+            });
+          });
+
+          document.querySelectorAll('.title-bar-controls button[aria-label="Maximize"]').forEach(button => {
+            button.addEventListener('click', (e) => {
+              const windowElement = e.target.closest('.window');
+              windowElement.classList.toggle('maximized');
+              if (windowElement.classList.contains('maximized')) {
+                e.target.setAttribute('aria-label', 'Restore');
+              } else {
+                e.target.setAttribute('aria-label', 'Maximize');
+              }
+            });
+          });
+
+          // Initialize theme
+          initializeTheme();
+
+          // Add event listeners for WP8 post buttons
+          document.querySelectorAll('.wp8-post-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+              const title = e.currentTarget.getAttribute('data-title');
+              const content = e.currentTarget.getAttribute('data-content');
+              openWP8Post(title, content);
+            });
+          });
+
+        });
 
         // Application functions
         let appWindowCounter = 0;
@@ -655,7 +738,7 @@
           const modalContent = document.getElementById('wp8-modal-content');
           
           modalTitle.textContent = title;
-          modalContent.innerHTML = '<p>' + content.replace(/\\n\\n/g, '</p><p>').replace(/\\n/g, '<br>') + '</p>';
+          modalContent.innerHTML = '<p>' + content.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
           modal.style.display = 'block';
         }
 
@@ -692,79 +775,6 @@
           // Update WP8 clock every minute
           setInterval(updateWP8Clock, 60000);
         }
-
-        // Initialize theme on page load
-        document.addEventListener('DOMContentLoaded', () => {
-          // Existing initialization...
-          makeDraggable(document.getElementById('info'));
-          makeDraggable(document.getElementById('posts'));
-          makeDraggable(document.getElementById('post-content'));
-
-          // Update clock immediately and then every minute
-          updateClock();
-          setInterval(updateClock, 60000);
-
-          // Start menu functionality
-          const startButton = document.getElementById('start-button');
-          const startMenu = document.getElementById('start-menu');
-          
-          startButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isVisible = startMenu.style.display !== 'none';
-            startMenu.style.display = isVisible ? 'none' : 'block';
-          });
-
-          // Close start menu when clicking elsewhere
-          document.addEventListener('click', (e) => {
-            if (!startMenu.contains(e.target) && e.target !== startButton) {
-              startMenu.style.display = 'none';
-            }
-          });
-
-          // Existing post link handlers...
-          document.querySelectorAll('.post-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-              e.preventDefault();
-              const content = decodeURIComponent(e.target.getAttribute('data-content'));
-              const title = e.target.getAttribute('data-title');
-              createPostWindow(title, content);
-            });
-          });
-
-          // Existing window control handlers...
-          document.querySelectorAll('.title-bar-controls button[aria-label="Minimize"]').forEach(button => {
-            button.addEventListener('click', (e) => {
-              const windowElement = e.target.closest('.window');
-              if (windowElement) {
-                minimizeWindow(windowElement);
-              }
-            });
-          });
-
-          document.querySelectorAll('.title-bar-controls button[aria-label="Maximize"]').forEach(button => {
-            button.addEventListener('click', (e) => {
-              const windowElement = e.target.closest('.window');
-              windowElement.classList.toggle('maximized');
-              if (windowElement.classList.contains('maximized')) {
-                e.target.setAttribute('aria-label', 'Restore');
-              } else {
-                e.target.setAttribute('aria-label', 'Maximize');
-              }
-            });
-          });
-
-          // Initialize theme
-          initializeTheme();
-
-          // Add event listeners for WP8 post buttons
-          document.querySelectorAll('.wp8-post-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-              const title = e.currentTarget.getAttribute('data-title');
-              const content = e.currentTarget.getAttribute('data-content');
-              openWP8Post(title, content);
-            });
-          });
-        });
 
       </script>
     </body>

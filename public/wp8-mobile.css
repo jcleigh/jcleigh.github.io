@@ -276,6 +276,7 @@
 .wp8-modal-content {
   padding: 24px;
   line-height: 1.6;
+  color: white;
 }
 
 .wp8-modal-content h1,
@@ -287,6 +288,7 @@
 
 .wp8-modal-content p {
   margin-bottom: 16px;
+  color: white;
 }
 
 .wp8-modal-content a {
