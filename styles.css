@@ -33,7 +33,7 @@ body {
 
 .main-window .window-body {
   height: calc(100% - 30px); /* Account for title bar height */
-  padding: 4px;
+  padding: 14px 4px 4px;
 }
 
 .window-body a {
@@ -227,6 +227,7 @@ body {
   background: #808080;
   margin: 2px 8px;
   border-top: 1px solid #dfdfdf;
+}
   
 /* Portrait styling for Information window */
 .info-window-body {
