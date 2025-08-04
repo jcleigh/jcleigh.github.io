@@ -16,6 +16,13 @@ const stylesSrc = path.join(__dirname, 'styles.css');
 const stylesDest = path.join(publicDir, 'styles.css');
 fs.copyFileSync(stylesSrc, stylesDest);
 
+// Ensure wp8-mobile.css is copied to public directory
+const wp8StylesSrc = path.join(__dirname, 'public', 'wp8-mobile.css');
+const wp8StylesDest = path.join(publicDir, 'wp8-mobile.css');
+if (fs.existsSync(wp8StylesSrc)) {
+  fs.copyFileSync(wp8StylesSrc, wp8StylesDest);
+}
+
 // Copy jordan.png portrait image to public directory
 const jordanSrc = path.join(__dirname, 'assets', 'images', 'jordan.png');
 const jordanDest = path.join(publicDir, 'jordan.png');
@@ -79,6 +86,7 @@ fs.readdir(postsDir, (err, files) => {
       <title>jcleigh's blog</title>
       <link rel="stylesheet" href="/98.css">
       <link rel="stylesheet" href="styles.css">
+      <link rel="stylesheet" href="wp8-mobile.css">
     </head>
 
     <body>
@@ -153,6 +161,11 @@ fs.readdir(postsDir, (err, files) => {
             <span class="start-menu-text">Notepad</span>
           </div>
           <div class="start-menu-separator"></div>
+          <div class="start-menu-item" onclick="toggleTheme()">
+            <span class="start-menu-icon">📱</span>
+            <span class="start-menu-text">Windows Phone 8 Mode</span>
+          </div>
+          <div class="start-menu-separator"></div>
           <div class="start-menu-item" onclick="window.location.reload()">
             <span class="start-menu-icon">🔄</span>
             <span class="start-menu-text">Refresh</span>
@@ -172,6 +185,106 @@ fs.readdir(postsDir, (err, files) => {
         <div id="system-tray">
           <span id="clock"></span>
         </div>
+      </div>
+
+      <!-- Windows Phone 8 Mobile Experience -->
+      <div class="wp8-mobile-container">
+        <!-- Status Bar -->
+        <div class="wp8-status-bar">
+          <span class="wp8-carrier">jcleigh.dev</span>
+          <span class="wp8-time" id="wp8-clock"></span>
+        </div>
+
+        <!-- Header -->
+        <div class="wp8-header">
+          <h1 class="wp8-title">jordan</h1>
+          <p class="wp8-subtitle">staff software engineer</p>
+        </div>
+
+        <!-- Tiles Container -->
+        <div class="wp8-tiles-container">
+          <!-- Profile and Info Tiles -->
+          <div class="wp8-tiles">
+            <div class="wp8-tile wp8-tile-wide wp8-profile-tile">
+              <img src="jordan.png" alt="Jordan Cleigh" class="wp8-profile-image">
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">Jordan Cleigh</h3>
+                <p class="wp8-tile-subtitle">Technology, Software Engineering, Music</p>
+              </div>
+            </div>
+
+            <a href="https://fmgsuite.com" target="_blank" class="wp8-tile wp8-tile-small wp8-tile-blue">
+              <div class="wp8-tile-icon">🏢</div>
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">FMG</h3>
+                <p class="wp8-tile-subtitle">Work</p>
+              </div>
+            </a>
+
+            <a href="https://linkedin.com/in/jcleigh" target="_blank" class="wp8-tile wp8-tile-small wp8-tile-teal">
+              <div class="wp8-tile-icon">💼</div>
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">LinkedIn</h3>
+              </div>
+            </a>
+
+            <a href="https://github.com/jcleigh" target="_blank" class="wp8-tile wp8-tile-small wp8-tile-purple">
+              <div class="wp8-tile-icon">💻</div>
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">GitHub</h3>
+              </div>
+            </a>
+
+            <div class="wp8-tile wp8-tile-small wp8-tile-green">
+              <div class="wp8-tile-content">
+                <p class="wp8-tile-count">${posts.length}</p>
+                <h3 class="wp8-tile-title">Posts</h3>
+              </div>
+            </div>
+
+            <!-- Theme Toggle Tile -->
+            <button class="wp8-tile wp8-tile-small wp8-tile-orange" onclick="toggleTheme()">
+              <div class="wp8-tile-icon">🪟</div>
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">Windows 98</h3>
+                <p class="wp8-tile-subtitle">Switch theme</p>
+              </div>
+            </button>
+          </div>
+
+          <!-- Posts Section -->
+          <div class="wp8-header" style="padding: 10px 0;">
+            <h2 class="wp8-title" style="font-size: 32px;">recent posts</h2>
+          </div>
+
+          <div class="wp8-tiles">
+            ${posts.map(post => {
+              const postDate = new Date(post.date);
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              const formattedDate = monthNames[postDate.getMonth()] + " " + postDate.getDate();
+              
+              // Create a plain text version of the content for the subtitle
+              const plainContent = post.content.replace(/<[^>]*>/g, '').substring(0, 50) + '...';
+              
+              return `<button class="wp8-tile wp8-tile-wide wp8-post-tile wp8-post-button" data-title="${post.title}" data-content="${post.content.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;')}">
+              <div class="wp8-post-date">${formattedDate}</div>
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">${post.title}</h3>
+                <p class="wp8-tile-subtitle">${plainContent}</p>
+              </div>
+            </button>`;
+            }).join('\n            ')}
+          </div>
+        </div>
+      </div>
+
+      <!-- WP8 Post Modal -->
+      <div id="wp8-modal" class="wp8-modal">
+        <div class="wp8-modal-header">
+          <h2 id="wp8-modal-title" class="wp8-modal-title"></h2>
+          <button class="wp8-modal-close" onclick="closeWP8Post()">✕</button>
+        </div>
+        <div id="wp8-modal-content" class="wp8-modal-content"></div>
       </div>
 
       <script>
@@ -393,6 +506,18 @@ fs.readdir(postsDir, (err, files) => {
               } else {
                 e.target.setAttribute('aria-label', 'Maximize');
               }
+            });
+          });
+
+          // Initialize theme
+          initializeTheme();
+
+          // Add event listeners for WP8 post buttons
+          document.querySelectorAll('.wp8-post-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+              const title = e.currentTarget.getAttribute('data-title');
+              const content = e.currentTarget.getAttribute('data-content');
+              openWP8Post(title, content);
             });
           });
 
@@ -636,6 +761,75 @@ fs.readdir(postsDir, (err, files) => {
           const editMenu = document.getElementById('notepad-edit-menu');
           if (fileMenu) fileMenu.style.display = 'none';
           if (editMenu) editMenu.style.display = 'none';
+        }
+
+        // Windows Phone 8 Functions
+        function toggleTheme() {
+          const body = document.body;
+          const isWP8Mode = body.classList.contains('wp8-mode');
+          
+          if (isWP8Mode) {
+            // Switch back to Windows 98 mode
+            body.classList.remove('wp8-mode');
+            localStorage.setItem('theme', 'windows98');
+          } else {
+            // Switch to Windows Phone 8 mode
+            body.classList.add('wp8-mode');
+            localStorage.setItem('theme', 'wp8');
+          }
+          
+          // Close start menu if open
+          const startMenu = document.getElementById('start-menu');
+          if (startMenu) {
+            startMenu.style.display = 'none';
+          }
+          
+          // Update WP8 clock
+          updateWP8Clock();
+        }
+
+        function openWP8Post(title, content) {
+          const modal = document.getElementById('wp8-modal');
+          const modalTitle = document.getElementById('wp8-modal-title');
+          const modalContent = document.getElementById('wp8-modal-content');
+          
+          modalTitle.textContent = title;
+          modalContent.innerHTML = '<p>' + content.replace(/\\n\\n/g, '</p><p>').replace(/\\n/g, '<br>') + '</p>';
+          modal.style.display = 'block';
+        }
+
+        function closeWP8Post() {
+          const modal = document.getElementById('wp8-modal');
+          modal.style.display = 'none';
+        }
+
+        function updateWP8Clock() {
+          const wp8Clock = document.getElementById('wp8-clock');
+          if (wp8Clock) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+              hour12: true, 
+              hour: 'numeric', 
+              minute: '2-digit'
+            });
+            wp8Clock.textContent = timeString;
+          }
+        }
+
+        // Check for saved theme preference and auto-detect mobile
+        function initializeTheme() {
+          const savedTheme = localStorage.getItem('theme');
+          const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          // Auto-switch to WP8 on mobile, unless user has explicitly chosen Windows 98
+          if ((isMobile && savedTheme !== 'windows98') || savedTheme === 'wp8') {
+            document.body.classList.add('wp8-mode');
+          }
+          
+          // Update WP8 clock
+          updateWP8Clock();
+          // Update WP8 clock every minute
+          setInterval(updateWP8Clock, 60000);
         }
 
       </script>
