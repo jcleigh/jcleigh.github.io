@@ -72,7 +72,18 @@ fs.readdir(postsDir, (err, files) => {
     const outputFilePath = path.join(publicDir, file.replace('.md', '.html'));
     fs.writeFileSync(outputFilePath, html, 'utf-8');
 
-    posts.push({ title: data.title, date: data.date, file: file.replace('.md', '.html'), content: htmlContent });
+    // Format date as YYYY-MM-DD
+    let formattedDate = data.date;
+    if (data.date) {
+      const d = new Date(data.date);
+      if (!isNaN(d)) {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        formattedDate = `${year}-${month}-${day}`;
+      }
+    }
+    posts.push({ title: data.title, date: formattedDate, file: file.replace('.md', '.html'), content: htmlContent });
   });
 
   // Generate home page
