@@ -110,7 +110,7 @@ fs.readdir(postsDir, (err, files) => {
         <div class="status-bar">
           <p class="status-bar-field"><a href="https://linkedin.com/in/jcleigh" target="_blank">LinkedIn</a></p>
           <p class="status-bar-field"><a href="https://github.com/jcleigh" target="_blank">GitHub</a></p>
-          <p class="status-bar-field">Attributions</p> <!-- TODO: make a popup for icon and css attributions -->
+          <p class="status-bar-field"><a href="#" id="attributions-link">Attributions</a></p>
         </div>
       </div>
 
@@ -314,6 +314,14 @@ fs.readdir(postsDir, (err, files) => {
       </div>
 
       <script>
+        // Attributions window handler
+        function openAttributionsWindow() {
+          var content = '<ul class="attributions-list">'
+            + '<li><a href="https://jdan.github.io/98.css/" target="_blank">98.css</a></li>'
+            + '<li><a href="https://win98icons.alexmeub.com/" target="_blank">Windows 98 Icons</a></li>'
+            + '</ul>'
+          createAppWindow('Attributions', content, '350px', '200px', '<img src="help_sheet-1.png" height="12px" style="vertical-align:middle">');
+        }
         function makeDraggable(element) {
           let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
           const titleBar = element.querySelector('.title-bar');
@@ -480,6 +488,14 @@ fs.readdir(postsDir, (err, files) => {
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+          // Attributions link handler
+          const attribLink = document.getElementById('attributions-link');
+          if (attribLink) {
+            attribLink.addEventListener('click', function(e) {
+              e.preventDefault();
+              openAttributionsWindow();
+            });
+          }
           makeDraggable(document.getElementById('info'));
           makeDraggable(document.getElementById('talks'));
           makeDraggable(document.getElementById('posts'));
