@@ -49,8 +49,13 @@ body {
   left: 10px;
 }
 
+#talks {
+  top: 165px;
+  left: 10px;
+}
+
 #posts {
-  top: 155px;
+  top: 275px;
   left: 10px;
 }
 

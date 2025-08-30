@@ -91,7 +91,7 @@ fs.readdir(postsDir, (err, files) => {
 
     <body>
       <div id="info" class="window main-window">
-        <div id="title-bar" class="title-bar">
+        <div id="title-bar-info" class="title-bar">
           <div class="title-bar-text"><img src="help_book_big-1.png" height="12px"/> Information</div>
           <div class="title-bar-controls">
             <button aria-label="Minimize"></button>
@@ -111,6 +111,24 @@ fs.readdir(postsDir, (err, files) => {
           <p class="status-bar-field"><a href="https://linkedin.com/in/jcleigh" target="_blank">LinkedIn</a></p>
           <p class="status-bar-field"><a href="https://github.com/jcleigh" target="_blank">GitHub</a></p>
           <p class="status-bar-field">Attributions</p> <!-- TODO: make a popup for icon and css attributions -->
+        </div>
+      </div>
+
+      <div id="talks" class="window main-window">
+        <div id="title-bar-talks" class="title-bar">
+          <div class="title-bar-text"><img src="users-1.png" height="12px"/> Public Speaking</div>
+          <div class="title-bar-controls">
+            <button aria-label="Minimize"></button>
+            <button aria-label="Maximize" disabled></button>
+            <button aria-label="Close" disabled></button>
+          </div>
+        </div>
+        <div class="window-body">
+          <p class="post-header">I am available for public speaking engagements. DM me on <a href="https://linkedin.com/in/jcleigh" target="_blank">LinkedIn</a> for inquiries.</p>
+          <p class="post-header">View my talks:</p>
+          <ul>
+            <li><a href="https://github.com/jcleigh/talks" target="_blank">See all talks on GitHub</a></li>
+          </ul>
         </div>
       </div>
 
@@ -455,6 +473,7 @@ fs.readdir(postsDir, (err, files) => {
 
         document.addEventListener('DOMContentLoaded', () => {
           makeDraggable(document.getElementById('info'));
+          makeDraggable(document.getElementById('talks'));
           makeDraggable(document.getElementById('posts'));
           makeDraggable(document.getElementById('post-content'));
 
