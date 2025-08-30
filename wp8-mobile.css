@@ -150,6 +150,11 @@
   background: #ff0097;
 }
 
+.wp8-tile-yellow {
+  background: #ffc40d;
+  color: #222;
+}
+
 /* Tile Content */
 .wp8-tile-icon {
   font-size: 32px;
