@@ -253,6 +253,14 @@ fs.readdir(postsDir, (err, files) => {
               </div>
             </a>
 
+            <a href="https://github.com/jcleigh/talks" target="_blank" class="wp8-tile wp8-tile-small wp8-tile-yellow">
+              <div class="wp8-tile-icon">🎤</div>
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">Public Speaking</h3>
+                <p class="wp8-tile-subtitle">Talks & Slides</p>
+              </div>
+            </a>
+
             <div class="wp8-tile wp8-tile-small wp8-tile-green">
               <div class="wp8-tile-content">
                 <p class="wp8-tile-count">${posts.length}</p>
