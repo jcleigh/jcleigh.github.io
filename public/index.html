@@ -543,7 +543,7 @@ If that sounds like something you’d enjoy, I’d love for you to check it out 
           const calculatorHTML = 
             '<div style="text-align: center; padding: 10px;">' +
               '<div id="calc-display" style="background: black; color: lime; font-family: monospace; font-size: 18px; padding: 8px; margin-bottom: 10px; text-align: right; border: 2px inset #c0c0c0;">0</div>' +
-              '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">' +
+              '<div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(5, 1fr); gap: 2px;">' +
                 '<button onclick="clearCalc()" style="grid-column: span 2;">Clear</button>' +
                 '<button onclick="calcOperation(&quot;/&quot;)">/</button>' +
                 '<button onclick="calcOperation(&quot;*&quot;)">*</button>' +
@@ -558,7 +558,7 @@ If that sounds like something you’d enjoy, I’d love for you to check it out 
                 '<button onclick="calcNumber(&quot;1&quot;)">1</button>' +
                 '<button onclick="calcNumber(&quot;2&quot;)">2</button>' +
                 '<button onclick="calcNumber(&quot;3&quot;)">3</button>' +
-                '<button onclick="calcEquals()" style="grid-row: span 2; writing-mode: vertical-lr;">=</button>' +
+                '<button onclick="calcEquals()" style="grid-row: span 2;">=</button>' +
                 '<button onclick="calcNumber(&quot;0&quot;)" style="grid-column: span 2;">0</button>' +
                 '<button onclick="calcNumber(&quot;.&quot;)">.</button>' +
               '</div>' +
