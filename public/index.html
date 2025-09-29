@@ -540,31 +540,34 @@ If that sounds like something you’d enjoy, I’d love for you to check it out 
         }
 
         function openCalculator() {
+          const buttonStyle = 'background: silver; border: none; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf; font-family: Arial; font-size: 11px; min-height: 23px; min-width: 32px; cursor: pointer; color: #000;';
+          const buttonActiveStyle = 'background: silver; border: none; box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey; font-family: Arial; font-size: 11px; min-height: 23px; min-width: 32px; cursor: pointer; color: #000;';
+          
           const calculatorHTML = 
-            '<div style="text-align: center; padding: 10px;">' +
-              '<div id="calc-display" style="background: black; color: lime; font-family: monospace; font-size: 18px; padding: 8px; margin-bottom: 10px; text-align: right; border: 2px inset #c0c0c0;">0</div>' +
-              '<div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(5, 1fr); gap: 2px;">' +
-                '<button onclick="clearCalc()" style="grid-column: span 2;">Clear</button>' +
-                '<button onclick="calcOperation(&quot;/&quot;)">/</button>' +
-                '<button onclick="calcOperation(&quot;*&quot;)">*</button>' +
-                '<button onclick="calcNumber(&quot;7&quot;)">7</button>' +
-                '<button onclick="calcNumber(&quot;8&quot;)">8</button>' +
-                '<button onclick="calcNumber(&quot;9&quot;)">9</button>' +
-                '<button onclick="calcOperation(&quot;-&quot;)">-</button>' +
-                '<button onclick="calcNumber(&quot;4&quot;)">4</button>' +
-                '<button onclick="calcNumber(&quot;5&quot;)">5</button>' +
-                '<button onclick="calcNumber(&quot;6&quot;)">6</button>' +
-                '<button onclick="calcOperation(&quot;+&quot;)">+</button>' +
-                '<button onclick="calcNumber(&quot;1&quot;)">1</button>' +
-                '<button onclick="calcNumber(&quot;2&quot;)">2</button>' +
-                '<button onclick="calcNumber(&quot;3&quot;)">3</button>' +
-                '<button onclick="calcEquals()" style="grid-row: span 2;">=</button>' +
-                '<button onclick="calcNumber(&quot;0&quot;)" style="grid-column: span 2;">0</button>' +
-                '<button onclick="calcNumber(&quot;.&quot;)">.</button>' +
+            '<div style="background: #c0c0c0; padding: 8px;">' +
+              '<div id="calc-display" style="background: white; color: black; font-family: Arial; font-size: 11px; font-weight: bold; padding: 4px 8px; margin-bottom: 8px; text-align: right; box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a; border: none; min-height: 20px;">0</div>' +
+              '<div style="display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(5, 1fr); gap: 3px;">' +
+                '<button onclick="clearCalc()" style="' + buttonStyle + ' grid-column: span 2;">Clear</button>' +
+                '<button onclick="calcOperation(&quot;/&quot;)" style="' + buttonStyle + '">/</button>' +
+                '<button onclick="calcOperation(&quot;*&quot;)" style="' + buttonStyle + '">*</button>' +
+                '<button onclick="calcNumber(&quot;7&quot;)" style="' + buttonStyle + '">7</button>' +
+                '<button onclick="calcNumber(&quot;8&quot;)" style="' + buttonStyle + '">8</button>' +
+                '<button onclick="calcNumber(&quot;9&quot;)" style="' + buttonStyle + '">9</button>' +
+                '<button onclick="calcOperation(&quot;-&quot;)" style="' + buttonStyle + '">-</button>' +
+                '<button onclick="calcNumber(&quot;4&quot;)" style="' + buttonStyle + '">4</button>' +
+                '<button onclick="calcNumber(&quot;5&quot;)" style="' + buttonStyle + '">5</button>' +
+                '<button onclick="calcNumber(&quot;6&quot;)" style="' + buttonStyle + '">6</button>' +
+                '<button onclick="calcOperation(&quot;+&quot;)" style="' + buttonStyle + '">+</button>' +
+                '<button onclick="calcNumber(&quot;1&quot;)" style="' + buttonStyle + '">1</button>' +
+                '<button onclick="calcNumber(&quot;2&quot;)" style="' + buttonStyle + '">2</button>' +
+                '<button onclick="calcNumber(&quot;3&quot;)" style="' + buttonStyle + '">3</button>' +
+                '<button onclick="calcEquals()" style="' + buttonStyle + ' grid-row: span 2;">=</button>' +
+                '<button onclick="calcNumber(&quot;0&quot;)" style="' + buttonStyle + ' grid-column: span 2;">0</button>' +
+                '<button onclick="calcNumber(&quot;.&quot;)" style="' + buttonStyle + '">.</button>' +
               '</div>' +
             '</div>';
           
-          createAppWindow('Calculator', calculatorHTML, '350px', '220px', '🧮');
+          createAppWindow('Calculator', calculatorHTML, '300px', '250px', '🧮');
           document.getElementById('start-menu').style.display = 'none';
         }
 
