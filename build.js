@@ -741,7 +741,7 @@ fs.readdir(postsDir, (err, files) => {
                 '<button aria-label="Close"></button>' +
               '</div>' +
             '</div>' +
-            '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; height: 18px; margin-top: 18px;">' +
+            '<div class="notepad-menubar" style="background: #c0c0c0; border-bottom: 1px solid #808080; padding: 2px 4px; font-size: 11px; position: relative; height: 18px;">' +
               '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;file&quot;)" onmouseleave="hideNotepadMenu()">File</span>' +
               '<span class="notepad-menu" onmouseenter="showNotepadMenu(this, &quot;edit&quot;)" onmouseleave="hideNotepadMenu()">Edit</span>' +
               '<div id="notepad-file-menu" class="notepad-dropdown" style="display: none; position: absolute; top: 100%; left: 4px; background: #c0c0c0; border: 1px outset #c0c0c0; min-width: 80px; z-index: 1000;">' +
@@ -751,7 +751,7 @@ fs.readdir(postsDir, (err, files) => {
                 '<div class="notepad-menu-item" onclick="clearNote(); hideNotepadMenu();">Clear</div>' +
               '</div>' +
             '</div>' +
-            '<div class="window-body" style="height: calc(100% - 48px); padding: 4px;">' +
+            '<div class="window-body" style="height: calc(100% - 50px); padding: 4px;">' +
               '<textarea id="notepad-text" style="width: 100%; height: 100%; border: 1px inset #c0c0c0; font-family: monospace; padding: 5px; resize: none; box-sizing: border-box;" placeholder="Start typing..."></textarea>' +
             '</div>' +
             '<style>' +
