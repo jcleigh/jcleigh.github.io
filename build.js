@@ -23,6 +23,13 @@ if (fs.existsSync(wp8StylesSrc)) {
   fs.copyFileSync(wp8StylesSrc, wp8StylesDest);
 }
 
+// Ensure professional-theme.css is copied to public directory
+const professionalStylesSrc = path.join(__dirname, 'public', 'professional-theme.css');
+const professionalStylesDest = path.join(publicDir, 'professional-theme.css');
+if (fs.existsSync(professionalStylesSrc)) {
+  fs.copyFileSync(professionalStylesSrc, professionalStylesDest);
+}
+
 // Copy jordan.png portrait image to public directory
 const jordanSrc = path.join(__dirname, 'assets', 'images', 'jordan.png');
 const jordanDest = path.join(publicDir, 'jordan.png');
@@ -98,6 +105,7 @@ fs.readdir(postsDir, (err, files) => {
       <link rel="stylesheet" href="/98.css">
       <link rel="stylesheet" href="styles.css">
       <link rel="stylesheet" href="wp8-mobile.css">
+      <link rel="stylesheet" href="professional-theme.css">
     </head>
 
     <body>
@@ -190,9 +198,9 @@ fs.readdir(postsDir, (err, files) => {
             <span class="start-menu-text">Notepad</span>
           </div>
           <div class="start-menu-separator"></div>
-          <div class="start-menu-item" onclick="toggleTheme()">
-            <span class="start-menu-icon">📱</span>
-            <span class="start-menu-text">Windows Phone 8 Mode</span>
+          <div class="start-menu-item" onclick="cycleTheme()">
+            <span class="start-menu-icon">🎨</span>
+            <span class="start-menu-text">Switch Theme</span>
           </div>
           <div class="start-menu-separator"></div>
           <div class="start-menu-item" onclick="window.location.reload()">
@@ -280,10 +288,10 @@ fs.readdir(postsDir, (err, files) => {
             </div>
 
             <!-- Theme Toggle Tile -->
-            <button class="wp8-tile wp8-tile-small wp8-tile-orange" onclick="toggleTheme()">
-              <div class="wp8-tile-icon">🪟</div>
+            <button class="wp8-tile wp8-tile-small wp8-tile-orange" onclick="cycleTheme()">
+              <div class="wp8-tile-icon">🎨</div>
               <div class="wp8-tile-content">
-                <h3 class="wp8-tile-title">Windows 98</h3>
+                <h3 class="wp8-tile-title">Themes</h3>
                 <p class="wp8-tile-subtitle">Switch theme</p>
               </div>
             </button>
@@ -322,6 +330,111 @@ fs.readdir(postsDir, (err, files) => {
           <button class="wp8-modal-close" onclick="closeWP8Post()">✕</button>
         </div>
         <div id="wp8-modal-content" class="wp8-modal-content"></div>
+      </div>
+
+      <!-- Professional Theme -->
+      <div class="professional-container">
+        <!-- Navigation -->
+        <nav class="professional-nav">
+          <div class="professional-nav-content">
+            <a href="#" class="professional-logo">jcleigh.dev</a>
+            <div class="professional-nav-links">
+              <a href="#about">About</a>
+              <a href="#speaking">Speaking</a>
+              <a href="#blog">Blog</a>
+              <a href="#contact">Contact</a>
+              <button class="theme-picker" onclick="cycleTheme()">Theme</button>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="professional-hero" id="about">
+          <img src="jordan.png" alt="Jordan Cleigh" class="professional-profile-image">
+          <h1>Jordan Cleigh</h1>
+          <p class="subtitle">Staff Software Engineer & Technical Speaker</p>
+          <p class="description">
+            Passionate about technology, software engineering, and sharing knowledge through speaking engagements and technical content. 
+            I help teams build better software and share insights from the trenches of modern development.
+          </p>
+          <div class="professional-links">
+            <a href="https://linkedin.com/in/jcleigh" target="_blank" class="professional-link">
+              💼 LinkedIn
+            </a>
+            <a href="https://github.com/jcleigh" target="_blank" class="professional-link">
+              💻 GitHub
+            </a>
+            <a href="https://github.com/jcleigh/talks" target="_blank" class="professional-link">
+              🎤 View Talks
+            </a>
+          </div>
+        </section>
+
+        <!-- Content -->
+        <div class="professional-content">
+          <!-- Speaking Section -->
+          <section class="professional-section" id="speaking">
+            <h2>Speaking Engagements</h2>
+            <p>I'm available for technical conferences, meetups, and corporate events. I speak about software engineering, cloud architecture, and developer productivity.</p>
+            
+            <div class="speaking-item">
+              <h4>Available for Speaking Engagements</h4>
+              <div class="event-details">DM me on LinkedIn for inquiries</div>
+              <p>Topics include: Software Architecture, Cloud Technologies, Developer Experience, Team Leadership, and Technical Best Practices.</p>
+            </div>
+            
+            <div class="professional-cards">
+              <div class="professional-card">
+                <h3>🎯 Topics I Cover</h3>
+                <p>Software Architecture • Cloud Technologies • Developer Experience • Team Leadership • API Design • Performance Optimization</p>
+              </div>
+              <div class="professional-card">
+                <h3>📈 Speaking Experience</h3>
+                <p>Conference talks • Technical workshops • Corporate training • Team presentations • Community meetups</p>
+                <a href="https://github.com/jcleigh/talks" target="_blank">View all talks and slides →</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Blog Section -->
+          <section class="professional-section" id="blog">
+            <h2>Recent Posts</h2>
+            ${posts.map(post => {
+              const cleanTitle = post.title.replace(/"/g, '&quot;');
+              const cleanContent = post.content.replace(/<[^>]*>/g, '').replace(/"/g, '&quot;').replace(/\n/g, ' ');
+              return `
+            <div class="blog-post" onclick="openProfessionalPost('${cleanTitle}', '${cleanContent}')">
+              <h4>${post.title}</h4>
+              <div class="post-date">${post.date}</div>
+              <p>${post.content.replace(/<[^>]*>/g, '').substring(0, 150)}...</p>
+            </div>
+            `;
+            }).join('')}
+          </section>
+
+          <!-- Contact Section -->
+          <section class="professional-section" id="contact">
+            <h2>Let's Connect</h2>
+            <div class="professional-cards">
+              <div class="professional-card">
+                <h3>💼 Professional</h3>
+                <p>Staff Software Engineer at <a href="https://fmgsuite.com" target="_blank">FMG</a></p>
+                <p>Connect with me on <a href="https://linkedin.com/in/jcleigh" target="_blank">LinkedIn</a> for professional opportunities and speaking inquiries.</p>
+              </div>
+              <div class="professional-card">
+                <h3>🔗 Online Presence</h3>
+                <p>Find my code on <a href="https://github.com/jcleigh" target="_blank">GitHub</a></p>
+                <p>Speaking materials at <a href="https://github.com/jcleigh/talks" target="_blank">jcleigh/talks</a></p>
+                <p>YouTube: <a href="https://www.youtube.com/@NaturalSereneSounds" target="_blank">Natural Serene Sounds</a></p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="professional-footer">
+          <p>&copy; 2025 Jordan Cleigh. Built with care and attention to detail.</p>
+        </footer>
       </div>
 
       <script>
@@ -817,20 +930,31 @@ fs.readdir(postsDir, (err, files) => {
           if (editMenu) editMenu.style.display = 'none';
         }
 
-        // Windows Phone 8 Functions
-        function toggleTheme() {
+        // Theme cycling function - cycles through professional -> windows98 -> wp8
+        function cycleTheme() {
           const body = document.body;
-          const isWP8Mode = body.classList.contains('wp8-mode');
+          const currentTheme = getCurrentTheme();
           
-          if (isWP8Mode) {
-            // Switch back to Windows 98 mode
-            body.classList.remove('wp8-mode');
-            localStorage.setItem('theme', 'windows98');
-          } else {
-            // Switch to Windows Phone 8 mode
-            body.classList.add('wp8-mode');
-            localStorage.setItem('theme', 'wp8');
+          // Remove all theme classes
+          body.classList.remove('professional-mode', 'wp8-mode');
+          
+          let nextTheme;
+          switch(currentTheme) {
+            case 'professional':
+              nextTheme = 'windows98';
+              break;
+            case 'windows98':
+              nextTheme = 'wp8';
+              body.classList.add('wp8-mode');
+              break;
+            case 'wp8':
+            default:
+              nextTheme = 'professional';
+              body.classList.add('professional-mode');
+              break;
           }
+          
+          localStorage.setItem('theme', nextTheme);
           
           // Close start menu if open
           const startMenu = document.getElementById('start-menu');
@@ -840,6 +964,107 @@ fs.readdir(postsDir, (err, files) => {
           
           // Update WP8 clock
           updateWP8Clock();
+        }
+
+        // Legacy toggleTheme function for Windows 98 start menu - now cycles themes
+        function toggleTheme() {
+          cycleTheme();
+        }
+
+        // Get current theme from body classes and localStorage
+        function getCurrentTheme() {
+          const body = document.body;
+          if (body.classList.contains('professional-mode')) {
+            return 'professional';
+          } else if (body.classList.contains('wp8-mode')) {
+            return 'wp8';
+          } else {
+            return 'windows98';
+          }
+        }
+
+        // Professional theme post opening
+        function openProfessionalPost(title, content) {
+          // Create a modal-like overlay for professional theme
+          const modal = document.createElement('div');
+          modal.style.cssText = \`
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            box-sizing: border-box;
+          \`;
+          
+          const modalContent = document.createElement('div');
+          modalContent.style.cssText = \`
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: #e0e0e0;
+            position: relative;
+          \`;
+          
+          const closeBtn = document.createElement('button');
+          closeBtn.innerHTML = '✕';
+          closeBtn.style.cssText = \`
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: #00ffff;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 1rem;
+          \`;
+          closeBtn.onclick = () => modal.remove();
+          
+          const titleEl = document.createElement('h2');
+          titleEl.textContent = title;
+          titleEl.style.cssText = \`
+            color: #ffffff;
+            margin: 0 2rem 1rem 0;
+            font-size: 1.5rem;
+          \`;
+          
+          const contentEl = document.createElement('div');
+          contentEl.style.cssText = \`
+            line-height: 1.6;
+            color: #b0b0b0;
+          \`;
+          
+          // Convert content to HTML
+          const htmlContent = content
+            .replace(/\\n\\n/g, '</p><p>')
+            .replace(/\\n/g, '<br>')
+            .replace(/•/g, '&bull;');
+          contentEl.innerHTML = '<p>' + htmlContent + '</p>';
+          
+          modalContent.appendChild(closeBtn);
+          modalContent.appendChild(titleEl);
+          modalContent.appendChild(contentEl);
+          modal.appendChild(modalContent);
+          document.body.appendChild(modal);
+          
+          // Close on background click
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.remove();
+            }
+          });
         }
 
         function openWP8Post(title, content) {
@@ -875,10 +1100,33 @@ fs.readdir(postsDir, (err, files) => {
           const savedTheme = localStorage.getItem('theme');
           const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
           
-          // Auto-switch to WP8 on mobile, unless user has explicitly chosen Windows 98
-          if ((isMobile && savedTheme !== 'windows98') || savedTheme === 'wp8') {
-            document.body.classList.add('wp8-mode');
+          // Default to professional theme if no saved preference
+          let themeToApply = savedTheme || 'professional';
+          
+          // Auto-switch to WP8 on mobile for better experience, unless user has explicitly chosen another theme
+          if (isMobile && !savedTheme) {
+            themeToApply = 'wp8';
           }
+          
+          // Apply the theme
+          const body = document.body;
+          body.classList.remove('professional-mode', 'wp8-mode'); // Clear all theme classes
+          
+          switch(themeToApply) {
+            case 'professional':
+              body.classList.add('professional-mode');
+              break;
+            case 'wp8':
+              body.classList.add('wp8-mode');
+              break;
+            case 'windows98':
+            default:
+              // Windows 98 is the base theme (no additional classes needed)
+              break;
+          }
+          
+          // Save the applied theme
+          localStorage.setItem('theme', themeToApply);
           
           // Update WP8 clock
           updateWP8Clock();
