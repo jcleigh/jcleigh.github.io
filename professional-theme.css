@@ -1,0 +1,387 @@
+/* Professional Speaker Theme CSS */
+
+/* Professional Theme: Dark blues, grays, and cyan color scheme */
+/* Hide Windows 98 elements when in professional mode */
+.professional-mode .window,
+.professional-mode #taskbar,
+.professional-mode #start-menu {
+  display: none !important;
+}
+
+/* Professional Theme Layout */
+.professional-container {
+  display: none; /* Hidden by default, shown when professional-mode is active */
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #e0e0e0;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Arial", sans-serif;
+  font-weight: 400;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.professional-mode .professional-container {
+  display: block;
+}
+
+/* Professional Theme Body Override */
+.professional-mode body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigation Header */
+.professional-nav {
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.professional-nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.professional-logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00ffff;
+  text-decoration: none;
+}
+
+.professional-nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.professional-nav-links a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.professional-nav-links a:hover {
+  color: #00ffff;
+}
+
+.theme-picker {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #00ffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.theme-picker:hover {
+  background: rgba(0, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Hero Section */
+.professional-hero {
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.professional-profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #00ffff;
+  margin-bottom: 2rem;
+  object-fit: cover;
+}
+
+.professional-hero h1 {
+  font-size: 3rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.professional-hero .subtitle {
+  font-size: 1.25rem;
+  color: #00ffff;
+  margin-bottom: 1rem;
+}
+
+.professional-hero .description {
+  font-size: 1.1rem;
+  color: #b0b0b0;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.6;
+}
+
+/* Content Sections */
+.professional-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem 2rem;
+}
+
+.professional-section {
+  margin-bottom: 4rem;
+}
+
+.professional-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+}
+
+/* Card Grid */
+.professional-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.professional-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.professional-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+}
+
+.professional-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00ffff;
+  margin: 0 0 1rem 0;
+}
+
+.professional-card p {
+  color: #b0b0b0;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.professional-card a {
+  color: #00ffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.professional-card a:hover {
+  text-decoration: underline;
+}
+
+/* Speaking Engagements */
+.speaking-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid #00ffff;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.speaking-item h4 {
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.speaking-item .event-details {
+  color: #00ffff;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.speaking-item p {
+  color: #b0b0b0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Blog Posts */
+.blog-post {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.blog-post:hover {
+  border-color: rgba(0, 255, 255, 0.3);
+  transform: translateX(5px);
+}
+
+.blog-post h4 {
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.blog-post .post-date {
+  color: #00ffff;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-post p {
+  color: #b0b0b0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Links and Social */
+.professional-links {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.professional-link {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #00ffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.professional-link:hover {
+  background: rgba(0, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .professional-nav {
+    padding: 1rem;
+  }
+  
+  .professional-nav-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .professional-nav-links {
+    gap: 1rem;
+  }
+  
+  .professional-hero {
+    padding: 2rem 1rem;
+  }
+  
+  .professional-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .professional-content {
+    padding: 0 1rem 2rem 1rem;
+  }
+  
+  .professional-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .professional-card {
+    padding: 1.5rem;
+  }
+  
+  .professional-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .professional-link {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .professional-hero h1 {
+    font-size: 1.75rem;
+  }
+  
+  .professional-hero .subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .professional-profile-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .professional-section h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Footer */
+.professional-footer {
+  background: rgba(26, 26, 46, 0.8);
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.professional-footer p {
+  color: #b0b0b0;
+  margin: 0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 255, 0.5);
+}
