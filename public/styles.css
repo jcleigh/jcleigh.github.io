@@ -1,3 +1,20 @@
+/* Calculator button styles */
+.calculator-button {
+  background: silver;
+  border: none;
+  box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf;
+  font-family: "Pixelated MS Sans Serif", Arial;
+  font-size: 11px;
+  min-height: 23px;
+  min-width: 32px;
+  cursor: pointer;
+  color: #000;
+}
+
+.calculator-button:active {
+  box-shadow: inset -1px -1px #fff, inset 1px 1px #0a0a0a, inset -2px -2px #dfdfdf, inset 2px 2px grey;
+}
+
 /* Attributions window styles */
 .attributions-list {
   margin: 0 1em 0 1em;
