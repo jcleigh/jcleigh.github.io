@@ -738,50 +738,111 @@ fs.readdir(postsDir, (err, files) => {
         }
 
         function openCalculator() {
+          // Base button style for all buttons
+          const buttonStyle = 'background: silver; border: none; box-shadow: inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px grey, inset 2px 2px #dfdfdf; font-family: Arial; font-size: 11px; height: 28px; cursor: pointer; padding: 0;';
+          
+          // Memory buttons (narrow, red text)
+          const memoryButtonStyle = buttonStyle + ' color: #ff0000; font-weight: bold; width: 36px;';
+          
+          // Number buttons (blue text)
+          const numberButtonStyle = buttonStyle + ' color: #0000ff; font-weight: bold;';
+          
+          // Function buttons (black text)
+          const funcButtonStyle = buttonStyle + ' color: #000;';
+          
+          // Red function buttons
+          const redFuncButtonStyle = buttonStyle + ' color: #ff0000; font-weight: normal;';
+          
+          // Gray text buttons  
+          const grayButtonStyle = buttonStyle + ' color: #808080;';
+          
           const calculatorHTML = 
-            '<div style="text-align: center; padding: 10px;">' +
-              '<div id="calc-display" style="background: black; color: lime; font-family: monospace; font-size: 18px; padding: 8px; margin-bottom: 10px; text-align: right; border: 2px inset #c0c0c0;">0</div>' +
-              '<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">' +
-                '<button onclick="clearCalc()" style="grid-column: span 2;">Clear</button>' +
-                '<button onclick="calcOperation(&quot;/&quot;)">/</button>' +
-                '<button onclick="calcOperation(&quot;*&quot;)">*</button>' +
-                '<button onclick="calcNumber(&quot;7&quot;)">7</button>' +
-                '<button onclick="calcNumber(&quot;8&quot;)">8</button>' +
-                '<button onclick="calcNumber(&quot;9&quot;)">9</button>' +
-                '<button onclick="calcOperation(&quot;-&quot;)">-</button>' +
-                '<button onclick="calcNumber(&quot;4&quot;)">4</button>' +
-                '<button onclick="calcNumber(&quot;5&quot;)">5</button>' +
-                '<button onclick="calcNumber(&quot;6&quot;)">6</button>' +
-                '<button onclick="calcOperation(&quot;+&quot;)">+</button>' +
-                '<button onclick="calcNumber(&quot;1&quot;)">1</button>' +
-                '<button onclick="calcNumber(&quot;2&quot;)">2</button>' +
-                '<button onclick="calcNumber(&quot;3&quot;)">3</button>' +
-                '<button onclick="calcEquals()" style="grid-row: span 2; writing-mode: vertical-lr;">=</button>' +
-                '<button onclick="calcNumber(&quot;0&quot;)" style="grid-column: span 2;">0</button>' +
-                '<button onclick="calcNumber(&quot;.&quot;)">.</button>' +
+            '<div style="background: #c0c0c0; padding: 4px; width: 262px;">' +
+              '<div id="calc-display" style="background: white; color: navy; font-family: Arial; font-size: 18px; font-weight: bold; padding: 2px 4px; margin: 2px 2px 4px 2px; text-align: right; box-shadow: inset -1px -1px #fff, inset 1px 1px grey, inset -2px -2px #dfdfdf, inset 2px 2px #0a0a0a; border: none; height: 28px; line-height: 28px;">0.</div>' +
+              '<div style="display: grid; grid-template-columns: 36px repeat(5, 38px); gap: 2px;">' +
+                // Row 1: Empty, Backspace (spans 2), CE, C
+                '<button style="' + grayButtonStyle + ' opacity: 0.5;" disabled></button>' +
+                '<button onclick="calcBackspace()" style="' + redFuncButtonStyle + ' grid-column: span 2;">Backspace</button>' +
+                '<button onclick="calcClearEntry()" style="' + redFuncButtonStyle + '">CE</button>' +
+                '<button onclick="clearCalc()" style="' + redFuncButtonStyle + '">C</button>' +
+                '<button style="' + grayButtonStyle + ' opacity: 0.5;" disabled></button>' +
+                
+                // Row 2: MC, 7-9, /, sqrt
+                '<button onclick="calcMemoryClear()" style="' + memoryButtonStyle + '">MC</button>' +
+                '<button onclick="calcNumber(&quot;7&quot;)" style="' + numberButtonStyle + '">7</button>' +
+                '<button onclick="calcNumber(&quot;8&quot;)" style="' + numberButtonStyle + '">8</button>' +
+                '<button onclick="calcNumber(&quot;9&quot;)" style="' + numberButtonStyle + '">9</button>' +
+                '<button onclick="calcOperation(&quot;/&quot;)" style="' + funcButtonStyle + '">/</button>' +
+                '<button onclick="calcSqrt()" style="' + funcButtonStyle + ' color: #0000ff;">sqrt</button>' +
+                
+                // Row 3: MR, 4-6, *, %
+                '<button onclick="calcMemoryRecall()" style="' + memoryButtonStyle + '">MR</button>' +
+                '<button onclick="calcNumber(&quot;4&quot;)" style="' + numberButtonStyle + '">4</button>' +
+                '<button onclick="calcNumber(&quot;5&quot;)" style="' + numberButtonStyle + '">5</button>' +
+                '<button onclick="calcNumber(&quot;6&quot;)" style="' + numberButtonStyle + '">6</button>' +
+                '<button onclick="calcOperation(&quot;*&quot;)" style="' + funcButtonStyle + '">*</button>' +
+                '<button onclick="calcPercent()" style="' + funcButtonStyle + ' color: #0000ff;">%</button>' +
+                
+                // Row 4: MS, 1-3, -, 1/x
+                '<button onclick="calcMemoryStore()" style="' + memoryButtonStyle + '">MS</button>' +
+                '<button onclick="calcNumber(&quot;1&quot;)" style="' + numberButtonStyle + '">1</button>' +
+                '<button onclick="calcNumber(&quot;2&quot;)" style="' + numberButtonStyle + '">2</button>' +
+                '<button onclick="calcNumber(&quot;3&quot;)" style="' + numberButtonStyle + '">3</button>' +
+                '<button onclick="calcOperation(&quot;-&quot;)" style="' + funcButtonStyle + '">-</button>' +
+                '<button onclick="calcReciprocal()" style="' + funcButtonStyle + ' color: #0000ff;">1/x</button>' +
+                
+                // Row 5: M+, 0, +/-, ., +, =
+                '<button onclick="calcMemoryAdd()" style="' + memoryButtonStyle + '">M+</button>' +
+                '<button onclick="calcNumber(&quot;0&quot;)" style="' + numberButtonStyle + '">0</button>' +
+                '<button onclick="calcNumber(&quot;+/-&quot;)" style="' + numberButtonStyle + '">+/-</button>' +
+                '<button onclick="calcNumber(&quot;.&quot;)" style="' + numberButtonStyle + '">.</button>' +
+                '<button onclick="calcOperation(&quot;+&quot;)" style="' + funcButtonStyle + '">+</button>' +
+                '<button onclick="calcEquals()" style="' + redFuncButtonStyle + ' font-weight: bold;">=</button>' +
               '</div>' +
             '</div>';
           
-          createAppWindow('Calculator', calculatorHTML, '350px', '220px', '🧮');
+          createAppWindow('Calculator', calculatorHTML, '278px', 'auto', '🧮');
           document.getElementById('start-menu').style.display = 'none';
         }
 
-        let calcValue = '0';
+        let calcValue = '0.';
         let calcOperator = null;
         let calcPrevious = null;
         let calcWaitingForOperand = false;
 
         function updateCalcDisplay() {
           const display = document.getElementById('calc-display');
-          if (display) display.textContent = calcValue;
+          if (display) {
+            let displayValue = calcValue;
+            // Ensure we show at least "0." like Windows 98 calculator
+            if (displayValue === '0' || displayValue === '') {
+              displayValue = '0.';
+            } else if (!displayValue.includes('.') && !isNaN(displayValue)) {
+              displayValue = displayValue + '.';
+            }
+            display.textContent = displayValue;
+          }
         }
 
         function calcNumber(num) {
+          if (num === '+/-') {
+            const currentNum = parseFloat(calcValue);
+            calcValue = String(-currentNum);
+            updateCalcDisplay();
+            return;
+          }
+          
           if (calcWaitingForOperand) {
             calcValue = num;
             calcWaitingForOperand = false;
           } else {
-            calcValue = calcValue === '0' ? num : calcValue + num;
+            if (num === '.') {
+              if (!calcValue.includes('.')) {
+                calcValue = calcValue + num;
+              }
+            } else {
+              calcValue = calcValue === '0' ? num : calcValue + num;
+            }
           }
           updateCalcDisplay();
         }
@@ -829,6 +890,68 @@ fs.readdir(postsDir, (err, files) => {
             default: return current;
           }
         }
+
+        // Memory functions
+        let calcMemory = 0;
+
+        function calcMemoryClear() {
+          calcMemory = 0;
+        }
+
+        function calcMemoryRecall() {
+          calcValue = String(calcMemory);
+          calcWaitingForOperand = true;
+          updateCalcDisplay();
+        }
+
+        function calcMemoryStore() {
+          calcMemory = parseFloat(calcValue);
+        }
+
+        function calcMemoryAdd() {
+          calcMemory += parseFloat(calcValue);
+        }
+
+        // Additional calculator functions
+        function calcBackspace() {
+          if (calcValue.length > 1) {
+            calcValue = calcValue.slice(0, -1);
+          } else {
+            calcValue = '0';
+          }
+          updateCalcDisplay();
+        }
+
+        function calcClearEntry() {
+          calcValue = '0';
+          updateCalcDisplay();
+        }
+
+        function calcSqrt() {
+          const num = parseFloat(calcValue);
+          calcValue = String(Math.sqrt(num));
+          calcWaitingForOperand = true;
+          updateCalcDisplay();
+        }
+
+        function calcPercent() {
+          if (calcPrevious !== null && calcOperator) {
+            const prev = parseFloat(calcPrevious);
+            const current = parseFloat(calcValue);
+            calcValue = String(prev * current / 100);
+            updateCalcDisplay();
+          }
+        }
+
+        function calcReciprocal() {
+          const num = parseFloat(calcValue);
+          if (num !== 0) {
+            calcValue = String(1 / num);
+          }
+          calcWaitingForOperand = true;
+          updateCalcDisplay();
+        }
+
 
         function openNotepad() {
           // Create a custom window structure for Notepad with menu bar outside window-body
