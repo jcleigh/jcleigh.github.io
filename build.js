@@ -444,7 +444,7 @@ fs.readdir(postsDir, (err, files) => {
 
         <!-- Footer -->
         <footer class="professional-footer">
-          <p>&copy; 2025 Jordan Cleigh. Built with care and attention to detail.</p>
+          <p>&copy; 2025 Jordan Cleigh. Built with GitHub Copilot coding agent.</p>
         </footer>
       </div>
 
