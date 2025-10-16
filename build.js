@@ -129,6 +129,7 @@ fs.readdir(postsDir, (err, files) => {
         <div class="status-bar">
           <p class="status-bar-field"><a href="https://linkedin.com/in/jcleigh" target="_blank">LinkedIn</a></p>
           <p class="status-bar-field"><a href="https://github.com/jcleigh" target="_blank">GitHub</a></p>
+          <p class="status-bar-field"><a href="https://soundcloud.com/io_wa" target="_blank">SoundCloud</a></p>
           <p class="status-bar-field"><a href="#" id="attributions-link">Attributions</a></p>
         </div>
       </div>
@@ -272,6 +273,13 @@ fs.readdir(postsDir, (err, files) => {
               </div>
             </a>
 
+            <a href="https://soundcloud.com/io_wa" target="_blank" class="wp8-tile wp8-tile-small wp8-tile-red">
+              <div class="wp8-tile-icon">🎵</div>
+              <div class="wp8-tile-content">
+                <h3 class="wp8-tile-title">SoundCloud</h3>
+              </div>
+            </a>
+
             <a href="https://github.com/jcleigh/talks" target="_blank" class="wp8-tile wp8-tile-small wp8-tile-yellow">
               <div class="wp8-tile-icon">🎤</div>
               <div class="wp8-tile-content">
@@ -364,6 +372,9 @@ fs.readdir(postsDir, (err, files) => {
             <a href="https://github.com/jcleigh" target="_blank" class="professional-link">
               💻 GitHub
             </a>
+            <a href="https://soundcloud.com/io_wa" target="_blank" class="professional-link">
+              🎵 SoundCloud
+            </a>
             <a href="https://github.com/jcleigh/talks" target="_blank" class="professional-link">
               🎤 View Talks
             </a>
@@ -424,6 +435,7 @@ fs.readdir(postsDir, (err, files) => {
               <div class="professional-card">
                 <h3>🔗 Online Presence</h3>
                 <p>Find my code on <a href="https://github.com/jcleigh" target="_blank">GitHub</a></p>
+                <p>Listen to my music on <a href="https://soundcloud.com/io_wa" target="_blank">SoundCloud</a></p>
                 <p>Speaking materials at <a href="https://github.com/jcleigh/talks" target="_blank">jcleigh/talks</a></p>
               </div>
             </div>
